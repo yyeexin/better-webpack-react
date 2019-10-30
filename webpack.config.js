@@ -7,7 +7,14 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 
 module.exports = {
-	entry: { home: './src/index.js', other: './src/other.js' },
+	entry: './src/index.js',
+	/**
+	 * 1) source-map : 源码映射 会单独生成一个源码映射文件 出错会表示出错的列和行
+	 * 2) eval-source-map : 不会产生单独的文件 但是可以显示 行和 列
+	 * 3) cheap-module-source-map : 不会产生列 但是是一个单独的文件
+	 * 4）cheap-module-eval-source-map ：不会产生文件 集成在打包后的文件 也不会产生列
+	 */
+	// devtool: 'source-map', //增加映射文件 可以帮助我们调试源代码
 	output: {
 		filename: '[name].[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
@@ -24,16 +31,10 @@ module.exports = {
 			template: './src/index.html',
 			filename: 'index.html',
 			hash: true,
-			chunks: ['home'],
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
 			}
-		}),
-		new HtmlWebpackPlugin({
-			template: './src/index.html',
-			filename: 'other.html',
-			chunks: ['other']
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
