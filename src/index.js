@@ -2,8 +2,15 @@ console.log('index')
 
 class Log {
 	constructor() {
-		console.lo('出错了')
+		console.log('出错了')
 	}
 }
 
 let log = new Log()
+
+let xhr = new XMLHttpRequest()
+xhr.open('GET', '/user', true)
+xhr.onload = function() {
+	console.log(xhr.response)
+}
+xhr.send()

@@ -30,6 +30,14 @@ module.exports = {
 				target: 'http://localhost:8080',
 				pathRewrite: { '/api': '' }
 			}
+		},
+		//mock接口
+		before(app) {
+			app.get('/user', (req, res) => {
+				res.json({
+					name: 'study-webpack'
+				})
+			})
 		}
 	},
 	// watch: true, //实时打包
