@@ -4,15 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样�
 const MiniCssExtractPlugin_less = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
-const CleanWebpackPlugin = require('clean-webpack-plugin') //清空dist目录
+const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 const webpack = require('webpack')
 module.exports = {
-	mode: 'development', //production
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.[hash:8].js', //打包后的文件名
-		path: path.resolve(__dirname, 'dist'), //路径必须是一个决定路径
-		publicPath: './'
+		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
 	},
 	devServer: {
 		contentBase: './dist', //devServer如果不指定contentBase,默认会在根目录下起一个静态资源服务器,显示文件目录
@@ -36,8 +34,8 @@ module.exports = {
 		}),
 		new MiniCssExtractPlugin_less({
 			filename: 'less.css'
-		})
-		// new CleanWebpackPlugin('./dist')
+		}),
+		new CleanWebpackPlugin()
 		// new webpack.ProvidePlugin({
 		// 	//在每个模块中都注入 $
 		// 	$jq$: 'jquery'
