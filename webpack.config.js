@@ -26,6 +26,12 @@ module.exports = {
 		open: true,
 		compress: true // 是否压缩
 	},
+	watch: true, //实时打包
+	watchOptions: {
+		poll: 1000, //每秒监控多少次
+		aggreatement: 500, //输入防抖
+		ignored: /node_moudles/ //不需要监控哪个文件
+	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
