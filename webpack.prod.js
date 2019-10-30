@@ -1,5 +1,6 @@
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
+const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 const { smart } = require('webpack-merge')
 const base = require('./webpack.base.js')
 module.exports = smart(base, {
@@ -13,5 +14,6 @@ module.exports = smart(base, {
 				sourceMap: true // 源码映射
 			})
 		]
-	}
+	},
+	plugins: [new CleanWebpackPlugin()]
 })

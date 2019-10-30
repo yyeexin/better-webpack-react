@@ -1,7 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
-const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 module.exports = {
 	entry: './src/index.js',
 	output: {
@@ -20,8 +19,7 @@ module.exports = {
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
-		}),
-		new CleanWebpackPlugin()
+		})
 	],
 	externals: {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
