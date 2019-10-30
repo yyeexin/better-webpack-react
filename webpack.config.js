@@ -1,11 +1,11 @@
+const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
-const MiniCssExtractPlugin_less = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
-const webpack = require('webpack')
+
 module.exports = {
 	entry: './src/index.js',
 	output: {
@@ -31,9 +31,6 @@ module.exports = {
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
-		}),
-		new MiniCssExtractPlugin_less({
-			filename: 'css/less.css'
 		}),
 		new CleanWebpackPlugin()
 		// new webpack.ProvidePlugin({
@@ -65,12 +62,13 @@ module.exports = {
 				use: 'babel-loader'
 			},
 			{
-				test: /\.css$/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
-			},
-			{
-				test: /\.less$/,
-				use: [MiniCssExtractPlugin_less.loader, 'css-loader', 'less-loader', 'postcss-loader']
+				test: /\.(css|less)$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader',
+					'less-loader',
+					'postcss-loader'
+				]
 			},
 			{
 				test: /\.(jpg|png|gif|svg)$/,
