@@ -33,7 +33,7 @@ module.exports = {
 			filename: 'css/main.css'
 		}),
 		new MiniCssExtractPlugin_less({
-			filename: 'less.css'
+			filename: 'css/less.css'
 		}),
 		new CleanWebpackPlugin()
 		// new webpack.ProvidePlugin({
@@ -62,7 +62,7 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
 				include: path.resolve(__dirname, './src'),
-				use: 'babel-loader' //配置提取到独立文件
+				use: 'babel-loader'
 			},
 			{
 				test: /\.css$/,

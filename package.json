@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "webpack --mode=production",
-		"dev": "webpack-dev-server --mode=development"
+		"dev": "webpack-dev-server --mode=development",
+		"push": "git add . && git commit -m \"commit\" && git pull && git push"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.4",
