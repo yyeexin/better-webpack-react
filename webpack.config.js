@@ -1,5 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
+const MiniCssExtractPlugin_less = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
+
 module.exports = {
 	mode: 'production', //production
 	entry: './src/index.js',
@@ -26,6 +31,42 @@ module.exports = {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
 			}
+		}),
+		new MiniCssExtractPlugin({
+			filename: 'main.css'
+		}),
+		new MiniCssExtractPlugin_less({
+			filename: 'less.css'
 		})
-	]
+	],
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+			},
+			{
+				test: /\.less$/,
+				use: [
+					MiniCssExtractPlugin_less.loader,
+					// {
+					// 	loader: 'style-loader'
+					// },
+					'css-loader',
+					'less-loader',
+					'postcss-loader'
+				]
+			}
+		]
+	},
+	optimization: {
+		minimizer: [
+			new OptimizeCSSAssetsPlugin(),
+			new UglifyJsPlugin({
+				cache: true, //缓存
+				parallel: true, //并发
+				sourceMap: true // 源码映射
+			})
+		]
+	}
 }
