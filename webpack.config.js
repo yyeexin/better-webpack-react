@@ -6,17 +6,14 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
 
 module.exports = {
-	mode: 'production', //production
+	mode: 'development', //production
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
 	},
-	/**
-	 * devServer如果不指定contentBase,默认会在根目录下起一个静态资源服务器,显示文件目录
-	 */
 	devServer: {
-		contentBase: './dist',
+		contentBase: './dist', //devServer如果不指定contentBase,默认会在根目录下起一个静态资源服务器,显示文件目录
 		port: 3456,
 		progress: true,
 		open: true,
@@ -42,20 +39,29 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				include: path.resolve(__dirname, './src'),
+				use: {
+					loader: 'eslint-loader',
+					options: {
+						enforce: 'pre'
+					}
+				}
+			},
+			{
+				test: /\.js$/,
+				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
+				include: path.resolve(__dirname, './src'),
+				use: 'babel-loader' //配置提取到独立文件
+			},
+			{
 				test: /\.css$/,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
 			},
 			{
 				test: /\.less$/,
-				use: [
-					MiniCssExtractPlugin_less.loader,
-					// {
-					// 	loader: 'style-loader'
-					// },
-					'css-loader',
-					'less-loader',
-					'postcss-loader'
-				]
+				use: [MiniCssExtractPlugin_less.loader, 'css-loader', 'less-loader', 'postcss-loader']
 			}
 		]
 	},
