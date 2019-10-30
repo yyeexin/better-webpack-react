@@ -7,9 +7,9 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 
 module.exports = {
-	entry: './src/index.js',
+	entry: { home: './src/index.js', other: './src/other.js' },
 	output: {
-		filename: 'bundle.[hash:8].js', //打包后的文件名
+		filename: '[name].[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
 	},
 	devServer: {
@@ -24,19 +24,21 @@ module.exports = {
 			template: './src/index.html',
 			filename: 'index.html',
 			hash: true,
+			chunks: ['home'],
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
 			}
 		}),
+		new HtmlWebpackPlugin({
+			template: './src/index.html',
+			filename: 'other.html',
+			chunks: ['other']
+		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
 		}),
 		new CleanWebpackPlugin()
-		// new webpack.ProvidePlugin({
-		// 	//在每个模块中都注入 $
-		// 	$jq$: 'jquery'
-		// })
 	],
 	externals: {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
@@ -44,17 +46,6 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			// {
-			// 	test: /\.js$/,
-			// 	exclude: /node_modules/,
-			// 	include: path.resolve(__dirname, './src'),
-			// 	use: {
-			// 		loader: 'eslint-loader',
-			// 		options: {
-			// 			enforce: 'pre'
-			// 		}
-			// 	}
-			// },
 			{
 				test: /\.js$/,
 				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
