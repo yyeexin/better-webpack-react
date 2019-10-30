@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样�
 const MiniCssExtractPlugin_less = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
-
+const webpack = require('webpack')
 module.exports = {
 	mode: 'development', //production
 	entry: './src/index.js',
@@ -35,7 +35,15 @@ module.exports = {
 		new MiniCssExtractPlugin_less({
 			filename: 'less.css'
 		})
+		// new webpack.ProvidePlugin({
+		// 	//在每个模块中都注入 $
+		// 	$jq$: 'jquery'
+		// })
 	],
+	externals: {
+		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
+		jquery: '$'
+	},
 	module: {
 		rules: [
 			// {
