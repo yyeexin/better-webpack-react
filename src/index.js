@@ -3,16 +3,18 @@ require('./c.less')
 let a = require('./a')
 console.log('hello!', a.str)
 
-const fn = () => {
-	console.log('箭头函数')
+const fn = async () => {
+	await console.log('箭头函数')
 }
 
 fn()
 
-// class A {
-// 	a = 'yexin'
-// }
+class A {
+	a = 'yexin'
+}
 
-// let a = new A()
+let ca = new A()
 
-// console.log(a.a)
+console.log(ca.a)
+
+console.log('abc'.includes('a'))

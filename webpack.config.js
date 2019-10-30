@@ -38,17 +38,17 @@ module.exports = {
 	],
 	module: {
 		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				include: path.resolve(__dirname, './src'),
-				use: {
-					loader: 'eslint-loader',
-					options: {
-						enforce: 'pre'
-					}
-				}
-			},
+			// {
+			// 	test: /\.js$/,
+			// 	exclude: /node_modules/,
+			// 	include: path.resolve(__dirname, './src'),
+			// 	use: {
+			// 		loader: 'eslint-loader',
+			// 		options: {
+			// 			enforce: 'pre'
+			// 		}
+			// 	}
+			// },
 			{
 				test: /\.js$/,
 				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
