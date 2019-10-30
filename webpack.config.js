@@ -65,6 +65,12 @@ module.exports = {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 		jquery: '$'
 	},
+	resolve: {
+		extensions: ['.js', '.css', '.json'], //省略文件后缀名
+		alias: {
+			image: path.resolve(__dirname, './src/image')
+		}
+	},
 	module: {
 		rules: [
 			{
