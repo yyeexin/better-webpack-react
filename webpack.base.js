@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样�
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
+const manifest = require('./dll/manifest.json')
 
 module.exports = {
 	entry: './src/index.js',
@@ -69,7 +70,8 @@ module.exports = {
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
-			}
+			},
+			vendor: './dll/' + manifest.name + '.js'
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
