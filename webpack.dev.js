@@ -1,6 +1,31 @@
 const { smart } = require('webpack-merge')
 const webpack = require('webpack')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const base = require('./webpack.base.js')
+const os = require('os')
+
+function getLocalIp() {
+	let networkIp = ''
+	try {
+		let network = os.networkInterfaces()
+		for (let dev in network) {
+			let iface = network[dev]
+			for (let i = 0; i < iface.length; i++) {
+				let alias = iface[i]
+				if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+					networkIp = alias.address
+				}
+			}
+		}
+	} catch (e) {
+		networkIp = 'localhost'
+	}
+	return networkIp
+}
+
+const LOCAL_IP = getLocalIp()
+const port = 3456
+
 module.exports = smart(base, {
 	mode: 'development',
 	/**
@@ -11,9 +36,12 @@ module.exports = smart(base, {
 	 */
 	devtool: 'source-map', //增加映射文件 可以帮助我们调试源代码
 	devServer: {
+		clientLogLevel: 'none', //关闭webpack控制台输出
+		quiet: true,
 		hot: true, //启用热更新
 		contentBase: './dist', //devServer如果不指定contentBase,默认会在根目录下起一个静态资源服务器,显示文件目录
-		port: 3456,
+		host: LOCAL_IP,
+		port,
 		progress: true,
 		open: true,
 		compress: true, // 是否压缩
@@ -33,6 +61,13 @@ module.exports = smart(base, {
 		}
 	},
 	plugins: [
+		new FriendlyErrorsWebpackPlugin({
+			compilationSuccessInfo: {
+				messages: [
+					`App is running at:\n- Local:   http://localhost:${port}/\n- Network: http://${LOCAL_IP}:${port}/`
+				]
+			}
+		}),
 		new webpack.NamedModulesPlugin(), //打印更新的模块路径
 		new webpack.HotModuleReplacementPlugin() //热更新插件
 	]
