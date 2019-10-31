@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			template: './src/index.html',
+			template: './public/index.html',
 			filename: 'index.html',
 			hash: true,
 			minify: {
@@ -19,7 +20,8 @@ module.exports = {
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
-		})
+		}),
+		new webpack.IgnorePlugin(/\.\/locale/, /moment/) //忽略moment内容自动引入所有语言包的行为,减小打包体积
 	],
 	externals: {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
@@ -41,12 +43,7 @@ module.exports = {
 			},
 			{
 				test: /\.(css|less)$/,
-				use: [
-					MiniCssExtractPlugin.loader,
-					'css-loader',
-					'less-loader',
-					'postcss-loader'
-				]
+				use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader', 'postcss-loader']
 			},
 			{
 				test: /\.(jpg|png|gif|svg)$/,
@@ -59,5 +56,6 @@ module.exports = {
 				}
 			}
 		]
-	}
+	},
+	noParse: /jquery/ //不去解析这个包的内部依赖,加快解析速度
 }
