@@ -1,3 +1,3 @@
-console.log('source.js!!!!!!!!!!!!!!')
+console.log('source.js')
 
 export default 'yexin'

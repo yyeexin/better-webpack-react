@@ -1,4 +1,5 @@
 const { smart } = require('webpack-merge')
+const webpack = require('webpack')
 const base = require('./webpack.base.js')
 module.exports = smart(base, {
 	mode: 'development',
@@ -10,6 +11,7 @@ module.exports = smart(base, {
 	 */
 	devtool: 'source-map', //增加映射文件 可以帮助我们调试源代码
 	devServer: {
+		hot: true, //启用热更新
 		contentBase: './dist', //devServer如果不指定contentBase,默认会在根目录下起一个静态资源服务器,显示文件目录
 		port: 3456,
 		progress: true,
@@ -29,7 +31,11 @@ module.exports = smart(base, {
 				})
 			})
 		}
-	}
+	},
+	plugins: [
+		new webpack.NamedModulesPlugin(), //打印更新的模块路径
+		new webpack.HotModuleReplacementPlugin() //热更新插件
+	]
 	// watch: true, //实时打包
 	// watchOptions: {
 	// 	poll: 1000, //每秒监控多少次
