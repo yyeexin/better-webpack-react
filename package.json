@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "webpack-dev-server --config webpack.dev.js",
 		"dll": "webpack --config webpack.dll.js",
-		"build": "webpack --config webpack.prod.js",
+		"build": "npm run dll && webpack --config webpack.prod.js",
 		"push": "git add . && git commit -m \"commit\" && git pull && git push"
 	},
 	"devDependencies": {
@@ -44,6 +44,7 @@
 		"@babel/runtime-corejs3": "^7.6.3",
 		"jquery": "^3.4.1",
 		"react": "^16.11.0",
-		"react-dom": "^16.11.0"
+		"react-dom": "^16.11.0",
+		"react-hot-loader": "^4.12.15"
 	}
 }

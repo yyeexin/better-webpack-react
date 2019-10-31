@@ -32,5 +32,6 @@
 			}
 		],
 		"@babel/plugin-syntax-dynamic-import" //动态导入支持
+		// "react-hot-loader/babel", //react热更新支持
 	]
 }

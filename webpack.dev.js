@@ -63,9 +63,7 @@ module.exports = smart(base, {
 	plugins: [
 		new FriendlyErrorsWebpackPlugin({
 			compilationSuccessInfo: {
-				messages: [
-					`App is running at:\n- Local:   http://localhost:${port}/\n- Network: http://${LOCAL_IP}:${port}/`
-				]
+				messages: [`App is running at: http://${LOCAL_IP}:${port}/`]
 			}
 		}),
 		new webpack.NamedModulesPlugin(), //打印更新的模块路径

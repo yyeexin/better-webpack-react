@@ -1,17 +1,8 @@
-import $ from 'jquery'
-// console.log($)
-import str from './source'
-
-let button = document.createElement('button')
-button.innerHTML = '按钮'
-button.addEventListener('click', function() {
-	console.log(str)
-})
-document.body.appendChild(button)
-
-if (module.hot) {
-	module.hot.accept('./source.js', () => {
-		const str = require('./source').default
-		console.log(str)
-	})
-}
+// import 'react-hot-loader'
+// import { hot } from 'react-hot-loader/root'
+import React from 'react'
+import ReactDom from 'react-dom'
+import App from './App.js'
+import ABC from './class'
+console.log(App, ABC)
+ReactDom.render(App, document.getElementById('root'))
