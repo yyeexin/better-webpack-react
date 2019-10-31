@@ -12,7 +12,7 @@ module.exports = smart(base, {
 			new UglifyJsPlugin({
 				cache: true, //缓存
 				parallel: true, //并发
-				sourceMap: true // 源码映射
+				sourceMap: false // 源码映射
 			})
 		]
 	},
