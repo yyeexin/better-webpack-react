@@ -101,7 +101,7 @@ module.exports = {
 				vendor: {
 					name: 'vendor',
 					chunks: 'all',
-					test: /node_modules/,
+					test: /[\\/]node_modules[\\/]/,
 					minSize: 0,
 					minChunks: 2,
 					priority: 1
