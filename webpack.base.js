@@ -1,9 +1,11 @@
 const path = require('path')
+const os = require('os')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
+const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 
 module.exports = {
 	entry: './src/index.js',
@@ -64,11 +66,13 @@ module.exports = {
 		]),
 		new Happypack({
 			id: 'js',
-			use: ['babel-loader']
+			threadPool: happyThreadPool,
+			loaders: ['babel-loader']
 		}),
 		new Happypack({
 			id: 'css',
-			use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader', 'postcss-loader']
+			threadPool: happyThreadPool,
+			loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader', 'postcss-loader']
 		})
 	],
 	externals: {
