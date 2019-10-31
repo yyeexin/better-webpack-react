@@ -41,6 +41,7 @@
 	},
 	"dependencies": {
 		"@babel/runtime-corejs3": "^7.6.3",
+		"jquery": "^3.4.1",
 		"react": "^16.11.0",
 		"react-dom": "^16.11.0"
 	}
