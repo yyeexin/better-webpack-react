@@ -2,6 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 module.exports = {
 	entry: './src/index.js',
 	output: {
@@ -21,7 +23,19 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
 		}),
-		new webpack.IgnorePlugin(/\.\/locale/, /moment/) //忽略moment内容自动引入所有语言包的行为,减小打包体积
+		new webpack.IgnorePlugin(/\.\/locale/, /moment/), //忽略moment内容自动引入所有语言包的行为,减小打包体积
+		new webpack.DllReferencePlugin({
+			//引用动态链接库
+			manifest: path.resolve(__dirname, 'dll', 'manifest.json')
+		}),
+		new CopyWebpackPlugin([
+			{
+				from: './dll',
+				to: path.resolve(__dirname, './dist/dll'),
+				toType: 'dir',
+				ignore: 'manifest.json'
+			}
+		])
 	],
 	externals: {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
@@ -55,7 +69,7 @@ module.exports = {
 					}
 				}
 			}
-		]
-	},
-	noParse: /jquery/ //不去解析这个包的内部依赖,加快解析速度
+		],
+		noParse: /jquery/ //不去解析这个包的内部依赖,加快解析速度
+	}
 }

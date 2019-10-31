@@ -5,7 +5,8 @@
 			{
 				"modules": false // 对ES6的模块文件不做转化，以便使用tree shaking、sideEffects等
 			}
-		]
+		],
+		"@babel/preset-react"
 	],
 	"plugins": [
 		[

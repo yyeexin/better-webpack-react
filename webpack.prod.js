@@ -3,6 +3,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的�
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 const { smart } = require('webpack-merge')
 const base = require('./webpack.base.js')
+
 module.exports = smart(base, {
 	mode: 'production',
 	optimization: {
