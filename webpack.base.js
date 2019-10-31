@@ -6,10 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
 
 module.exports = {
-	entry: {
-		index: './src/index.js',
-		other: './src/other.js'
-	},
+	entry: './src/index.js',
 	output: {
 		filename: '[name].[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
@@ -67,17 +64,6 @@ module.exports = {
 			template: './public/index.html',
 			filename: 'index.html',
 			hash: true,
-			chunks: ['index'],
-			minify: {
-				removeAttributeQuotes: true, //删除双引号
-				collapseWhitespace: true //折叠成一行
-			}
-		}),
-		new HtmlWebpackPlugin({
-			template: './public/index.html',
-			filename: 'other.html',
-			hash: true,
-			chunks: ['other'],
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
