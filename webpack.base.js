@@ -14,27 +14,10 @@ module.exports = {
 		filename: '[name].[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
 	},
-	optimization: {
-		//分隔代码块
-		splitChunks: {
-			//缓存组
-			cacheGroups: {
-				//公共的模块
-				common: {
-					name: 'common',
-					chunks: 'all',
-					minSize: 0,
-					minChunks: 2
-				},
-				vendor: {
-					name: 'vendor',
-					chunks: 'all',
-					test: /node_modules/,
-					minSize: 0,
-					minChunks: 2,
-					priority: 1
-				}
-			}
+	resolve: {
+		extensions: ['.js', '.css', '.json'], //省略文件后缀名
+		alias: {
+			image: path.resolve(__dirname, './src/image')
 		}
 	},
 	module: {
@@ -103,10 +86,27 @@ module.exports = {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 		// jquery: '$'
 	},
-	resolve: {
-		extensions: ['.js', '.css', '.json'], //省略文件后缀名
-		alias: {
-			image: path.resolve(__dirname, './src/image')
+	optimization: {
+		//分隔代码块
+		splitChunks: {
+			//缓存组
+			cacheGroups: {
+				//公共的模块
+				common: {
+					name: 'common',
+					chunks: 'all',
+					minSize: 0,
+					minChunks: 2
+				},
+				vendor: {
+					name: 'vendor',
+					chunks: 'all',
+					test: /node_modules/,
+					minSize: 0,
+					minChunks: 2,
+					priority: 1
+				}
+			}
 		}
 	}
 }
