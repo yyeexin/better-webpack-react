@@ -1,8 +1,5 @@
-// import 'react-hot-loader'
-// import { hot } from 'react-hot-loader/root'
+import 'react-hot-loader'
 import React from 'react'
 import ReactDom from 'react-dom'
 import App from './App.js'
-import ABC from './class'
-console.log(App, ABC)
-ReactDom.render(App, document.getElementById('root'))
+ReactDom.render(<App />, window.root)

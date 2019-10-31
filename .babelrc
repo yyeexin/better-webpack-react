@@ -31,7 +31,7 @@
 				"loose": true // babel编译时，对class的属性采用赋值表达式，而不是Object.defineProperty（更简洁）
 			}
 		],
-		"@babel/plugin-syntax-dynamic-import" //动态导入支持
-		// "react-hot-loader/babel", //react热更新支持
+		"@babel/plugin-syntax-dynamic-import", //动态导入支持
+		"react-hot-loader/babel" //react热更新支持
 	]
 }
