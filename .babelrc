@@ -32,6 +32,14 @@
 			}
 		],
 		"@babel/plugin-syntax-dynamic-import", //动态导入支持
-		"react-hot-loader/babel" //react热更新支持
+		"react-hot-loader/babel", //react热更新支持
+		[
+			"import",
+			{
+				"libraryName": "antd",
+				"libraryDirectory": "es",
+				"style": "css" // `style: true` 会加载 less 文件
+			}
+		]
 	]
 }

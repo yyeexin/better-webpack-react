@@ -29,8 +29,16 @@ module.exports = {
 				use: 'happypack/loader?id=js'
 			},
 			{
-				test: /\.(css|less)$/,
-				use: 'happypack/loader?id=css'
+				test: /\.css$/,
+				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=css']
+			},
+			{
+				test: /\.scss$/,
+				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=scss']
+			},
+			{
+				test: /\.less$/,
+				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=less']
 			},
 			{
 				test: /\.(jpg|png|gif|svg)$/,
@@ -79,7 +87,17 @@ module.exports = {
 		new Happypack({
 			id: 'css',
 			threadPool: happyThreadPool,
-			loaders: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader', 'postcss-loader']
+			loaders: ['css-loader', 'postcss-loader']
+		}),
+		new Happypack({
+			id: 'less',
+			threadPool: happyThreadPool,
+			loaders: ['css-loader', 'postcss-loader', { loader: 'less-loader', options: { javascriptEnabled: true } }]
+		}),
+		new Happypack({
+			id: 'scss',
+			threadPool: happyThreadPool,
+			loaders: ['css-loader', 'postcss-loader', 'sass-loader']
 		})
 	],
 	externals: {
