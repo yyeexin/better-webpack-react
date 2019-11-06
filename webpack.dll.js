@@ -8,7 +8,10 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
 	mode: 'production',
-	entry: { vendor: ['react', 'react-dom'] },
+	entry: {
+		vendor: ['react', 'react-dom'],
+		icons: ['@ant-design/icons/lib/dist.js']
+	},
 	output: {
 		filename: 'dll_[name].js',
 		path: path.resolve(__dirname, 'dll'),
@@ -23,7 +26,7 @@ module.exports = {
 		}),
 		new webpack.DllPlugin({
 			name: 'dll_[name]',
-			path: path.resolve(__dirname, 'dll', 'manifest.json')
+			path: path.resolve(__dirname, 'dll', 'manifest_[name].json')
 		})
 	]
 }

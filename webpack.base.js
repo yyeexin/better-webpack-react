@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样�
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
-const manifest = require('./dll/manifest.json')
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
 
 module.exports = {
 	entry: './src/index.js',
@@ -23,7 +23,7 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
 				include: path.resolve(__dirname, './src'),
 				use: 'happypack/loader?id=js'
@@ -45,7 +45,7 @@ module.exports = {
 				use: {
 					loader: 'url-loader',
 					options: {
-						limit: 1,
+						limit: 8192,
 						outputPath: 'image'
 					}
 				}
@@ -61,22 +61,18 @@ module.exports = {
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
 				collapseWhitespace: true //折叠成一行
-			},
-			vendor: './dll/' + manifest.name + '.js'
+			}
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'css/main.css'
 		}),
 		new webpack.IgnorePlugin(/\.\/locale/, /moment/), //忽略moment内容自动引入所有语言包的行为,减小打包体积
-		new webpack.DllReferencePlugin({
-			manifest: path.resolve(__dirname, 'dll', 'manifest.json') //引用动态链接库
-		}),
 		new CopyWebpackPlugin([
 			{
 				from: './dll',
 				to: path.resolve(__dirname, './dist/dll'),
 				toType: 'dir',
-				ignore: 'manifest.json'
+				ignore: ['*.json']
 			}
 		]),
 		new Happypack({
@@ -98,6 +94,16 @@ module.exports = {
 			id: 'scss',
 			threadPool: happyThreadPool,
 			loaders: ['css-loader', 'postcss-loader', 'sass-loader']
+		}),
+		new webpack.DllReferencePlugin({
+			manifest: path.resolve(__dirname, 'dll', 'manifest_icons.json') //引用动态链接库
+		}),
+		new webpack.DllReferencePlugin({
+			manifest: path.resolve(__dirname, 'dll', 'manifest_vendor.json') //引用动态链接库
+		}),
+		new HtmlWebpackTagsPlugin({
+			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', './dll/dll_vendor.js', './dll/dll_icons.js'],
+			append: false
 		})
 	],
 	externals: {

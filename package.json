@@ -5,8 +5,9 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "webpack-dev-server --config webpack.dev.js",
+		"build": "webpack --config webpack.prod.js",
 		"dll": "webpack --config webpack.dll.js",
-		"build": "npm run dll && webpack --config webpack.prod.js",
+		"build:dll": "npm run dll && webpack --config webpack.prod.js",
 		"push": "git add . && git commit -m \"commit\" && git pull && git push"
 	},
 	"devDependencies": {
@@ -28,6 +29,7 @@
 		"friendly-errors-webpack-plugin": "^1.7.0",
 		"happypack": "^5.0.1",
 		"html-webpack-plugin": "^3.2.0",
+		"html-webpack-tags-plugin": "^2.0.17",
 		"less": "^3.10.3",
 		"less-loader": "^5.0.0",
 		"mini-css-extract-plugin": "^0.8.0",
@@ -38,6 +40,7 @@
 		"uglifyjs-webpack-plugin": "^2.2.0",
 		"url-loader": "^2.2.0",
 		"webpack": "^4.41.2",
+		"webpack-bundle-analyzer": "^3.6.0",
 		"webpack-cli": "^3.3.9",
 		"webpack-dev-server": "^3.9.0",
 		"webpack-merge": "^4.2.2"
