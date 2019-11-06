@@ -1,6 +1,11 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const { smart } = require('webpack-merge')
 const webpack = require('webpack')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const path = require('path')
+const os = require('os')
+const Happypack = require('happypack')
+const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 const base = require('./webpack.base.js')
 const getLocalIp = require('./scripts/getLocalIp')
 const IP = getLocalIp()
@@ -8,12 +13,6 @@ const port = 3456
 
 module.exports = smart(base, {
 	mode: 'development',
-	/**
-	 * 1) source-map : 源码映射 会单独生成一个源码映射文件 出错会表示出错的列和行
-	 * 2) eval-source-map : 不会产生单独的文件 但是可以显示 行和 列
-	 * 3) cheap-module-source-map : 不会产生列 但是是一个单独的文件
-	 * 4）cheap-module-eval-source-map ：不会产生文件 集成在打包后的文件 也不会产生列
-	 */
 	devtool: 'source-map', //增加映射文件 可以帮助我们调试源代码
 	devServer: {
 		clientLogLevel: 'none', //关闭webpack控制台输出
@@ -40,14 +39,85 @@ module.exports = smart(base, {
 			})
 		}
 	},
+	module: {
+		rules: [
+			{
+				test: /\.jsx?$/,
+				exclude: /node_modules/, // 加快编译速度，不包含node_modules文件夹内容
+				include: path.resolve(__dirname, './src'),
+				use: 'happypack/loader?id=js'
+			},
+			{
+				test: /\.css$/,
+				include: /node_modules/,
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
+			},
+			{
+				test: /\.css$/,
+				exclude: /node_modules/,
+				use: 'happypack/loader?id=css'
+			},
+			{
+				test: /\.scss$/,
+				exclude: /node_modules/,
+				use: 'happypack/loader?id=scss'
+			},
+			{
+				test: /\.less$/,
+				exclude: /node_modules/,
+				use: 'happypack/loader?id=less'
+			},
+			{
+				test: /\.(jpg|png|gif|svg)$/,
+				use: {
+					loader: 'url-loader',
+					options: {
+						limit: 8192,
+						outputPath: 'image'
+					}
+				}
+			}
+		]
+	},
 	plugins: [
+		new MiniCssExtractPlugin({ filename: 'main.css' }),
 		new FriendlyErrorsWebpackPlugin({
 			compilationSuccessInfo: {
 				messages: [`App is running at: http://${IP}:${port}/`]
 			}
 		}),
 		new webpack.NamedModulesPlugin(), //打印更新的模块路径
-		new webpack.HotModuleReplacementPlugin() //热更新插件
+		new webpack.HotModuleReplacementPlugin(), //热更新插件
+		new Happypack({
+			id: 'js',
+			threadPool: happyThreadPool,
+			loaders: ['babel-loader']
+		}),
+		new Happypack({
+			id: 'css',
+			threadPool: happyThreadPool,
+			loaders: ['style-loader', { loader: 'css-loader', options: { modules: true } }, 'postcss-loader']
+		}),
+		new Happypack({
+			id: 'less',
+			threadPool: happyThreadPool,
+			loaders: [
+				'style-loader',
+				{ loader: 'css-loader', options: { modules: true } },
+				'postcss-loader',
+				{ loader: 'less-loader', options: { javascriptEnabled: true } }
+			]
+		}),
+		new Happypack({
+			id: 'scss',
+			threadPool: happyThreadPool,
+			loaders: [
+				'style-loader',
+				{ loader: 'css-loader', options: { modules: true } },
+				'postcss-loader',
+				'sass-loader'
+			]
+		})
 	]
 	// watch: true, //实时打包
 	// watchOptions: {
