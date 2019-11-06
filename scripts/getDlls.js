@@ -2,7 +2,7 @@ const path = require('path') //系统路径模块
 const fs = require('fs') //文件模块
 const filePath = path.resolve(__dirname, '../dll')
 
-function getDlls() {
+function getDLLs() {
 	let manifests = []
 	let dlls_url = []
 	const fileDir = fs.readdirSync(filePath)
@@ -23,4 +23,4 @@ function getDlls() {
 	}
 }
 
-module.exports = getDlls
+module.exports = getDLLs
