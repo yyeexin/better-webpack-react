@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
+const getDllArrayList = require('./scripts/getDllArrayList')
 
 module.exports = {
 	entry: './src/index.js',
@@ -63,9 +64,7 @@ module.exports = {
 				collapseWhitespace: true //折叠成一行
 			}
 		}),
-		new MiniCssExtractPlugin({
-			filename: 'css/main.css'
-		}),
+		new MiniCssExtractPlugin({ filename: 'css/main.css' }),
 		new webpack.IgnorePlugin(/\.\/locale/, /moment/), //忽略moment内容自动引入所有语言包的行为,减小打包体积
 		new CopyWebpackPlugin([
 			{
@@ -102,7 +101,7 @@ module.exports = {
 			manifest: path.resolve(__dirname, 'dll', 'manifest_vendor.json') //引用动态链接库
 		}),
 		new HtmlWebpackTagsPlugin({
-			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', './dll/dll_vendor.js', './dll/dll_icons.js'],
+			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', ...getDllArrayList()],
 			append: false
 		})
 	],
@@ -111,11 +110,8 @@ module.exports = {
 		jquery: '$'
 	},
 	optimization: {
-		//分隔代码块
 		splitChunks: {
-			//缓存组
 			cacheGroups: {
-				//公共的模块
 				common: {
 					name: 'common',
 					chunks: 'all',
