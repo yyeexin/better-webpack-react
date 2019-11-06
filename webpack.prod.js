@@ -1,5 +1,5 @@
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
@@ -12,16 +12,6 @@ const base = require('./webpack.base.js')
 
 module.exports = smart(base, {
 	mode: 'production',
-	optimization: {
-		minimizer: [
-			new OptimizeCSSAssetsPlugin(),
-			new UglifyJsPlugin({
-				cache: true, //缓存
-				parallel: true, //并发
-				sourceMap: false // 源码映射
-			})
-		]
-	},
 	module: {
 		rules: [
 			{
@@ -90,5 +80,15 @@ module.exports = smart(base, {
 			threadPool: happyThreadPool,
 			loaders: [{ loader: 'css-loader', options: { modules: true } }, 'postcss-loader', 'sass-loader']
 		})
-	]
+	],
+	optimization: {
+		minimizer: [
+			new OptimizeCSSAssetsPlugin(),
+			new UglifyJsPlugin({
+				cache: true, //缓存
+				parallel: true, //并发
+				sourceMap: false // 源码映射
+			})
+		]
+	}
 })
