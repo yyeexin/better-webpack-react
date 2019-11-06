@@ -7,7 +7,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const Happypack = require('happypack')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
-const getDllArrayList = require('./scripts/getDllArrayList')
+const getDlls = require('./scripts/getDlls')
+const DllsInfo = getDlls()
 
 module.exports = {
 	entry: './src/index.js',
@@ -94,17 +95,24 @@ module.exports = {
 			threadPool: happyThreadPool,
 			loaders: ['css-loader', 'postcss-loader', 'sass-loader']
 		}),
-		new webpack.DllReferencePlugin({
-			manifest: path.resolve(__dirname, 'dll', 'manifest_icons.json') //引用动态链接库
-		}),
-		new webpack.DllReferencePlugin({
-			manifest: path.resolve(__dirname, 'dll', 'manifest_vendor.json') //引用动态链接库
-		}),
+		// new webpack.DllReferencePlugin({
+		// 	manifest: path.resolve(__dirname, 'dll', 'manifest_icons.json') //引用动态链接库
+		// }),
+		// new webpack.DllReferencePlugin({
+		// 	manifest: path.resolve(__dirname, 'dll', 'manifest_vendor.json') //引用动态链接库
+		// }),
 		new HtmlWebpackTagsPlugin({
-			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', ...getDllArrayList()],
+			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', ...DllsInfo.dlls_url],
 			append: false
 		})
-	],
+	].concat([
+		...DllsInfo.manifests.map(
+			manifest =>
+				new webpack.DllReferencePlugin({
+					manifest: path.resolve(__dirname, 'dll', manifest) //引用动态链接库
+				})
+		)
+	]),
 	externals: {
 		//告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 		jquery: '$'
