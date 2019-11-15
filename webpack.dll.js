@@ -9,13 +9,18 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
 	mode: 'production',
 	entry: {
-		vendor: ['react', 'react-dom'],
-		icons: ['@ant-design/icons/lib/dist.js']
+		venders: ['react', 'jquery'],
+		assets: ['@ant-design/icons/lib/dist.js']
 	},
 	output: {
 		filename: 'dll_[name].js',
 		path: path.resolve(__dirname, 'dll'),
 		library: 'dll_[name]'
+	},
+	resolve: {
+		alias: {
+			'react-dom': '@hot-loader/react-dom'
+		}
 	},
 	plugins: [
 		new CleanWebpackPlugin(),

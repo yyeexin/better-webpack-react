@@ -15,7 +15,11 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.css', '.json'], //省略文件后缀名
 		alias: {
-			image: path.resolve(__dirname, './src/image')
+			'react-dom': '@hot-loader/react-dom',
+			'@': path.resolve(__dirname, './src'),
+			assets: path.resolve(__dirname, './src/assets'),
+			pages: path.resolve(__dirname, './src/pages'),
+			models: path.resolve(__dirname, './src/models')
 		}
 	},
 	module: {
@@ -56,6 +60,8 @@ module.exports = {
 		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 	},
 	optimization: {
+		namedChunks: true, //给chunk有意义的名称代替ids
+		namedModules: true, //给模块有意义的名称代替ids
 		splitChunks: {
 			cacheGroups: {
 				common: {

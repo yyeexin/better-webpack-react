@@ -1,11 +1,11 @@
 import dva from 'dva'
+import createLoading from 'dva-loading'
 import router from './router'
-
 // 1. Initialize
 const app = dva()
 
 // 2. Plugins
-// app.use({});
+app.use(createLoading())
 
 // 3. Model
 // app.model(require('./models/example').default);

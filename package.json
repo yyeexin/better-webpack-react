@@ -49,12 +49,12 @@
 	},
 	"dependencies": {
 		"@babel/runtime-corejs3": "^7.6.3",
+		"@hot-loader/react-dom": "^16.11.0",
 		"antd": "^3.25.0",
 		"dva": "^2.4.1",
+		"dva-loading": "^3.0.17",
 		"jquery": "^3.4.1",
 		"react": "^16.11.0",
-		"react-dom": "npm:@hot-loader/react-dom",
-		"react-hot-loader": "^4.12.15",
-		"react-router-dom": "^5.1.2"
+		"react-hot-loader": "^4.12.15"
 	}
 }
