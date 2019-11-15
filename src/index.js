@@ -1,6 +1,7 @@
 import dva from 'dva'
 import createLoading from 'dva-loading'
 import router from './router'
+import models from './models'
 // 1. Initialize
 const app = dva()
 
@@ -8,7 +9,7 @@ const app = dva()
 app.use(createLoading())
 
 // 3. Model
-// app.model(require('./models/example').default);
+models.forEach(model => app.model(model.default))
 
 // 4. Router
 app.router(router)

@@ -60,8 +60,6 @@ module.exports = {
 		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 	},
 	optimization: {
-		namedChunks: true, //给chunk有意义的名称代替ids
-		namedModules: true, //给模块有意义的名称代替ids
 		splitChunks: {
 			cacheGroups: {
 				common: {
