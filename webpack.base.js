@@ -7,7 +7,7 @@ const getDLLs = require('./scripts/getDLLs')
 const DLLs = getDLLs()
 
 module.exports = {
-	entry: './src/index.js',
+	entry: ['react-hot-loader/patch', './src/index.js'],
 	output: {
 		filename: '[name].[hash:8].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
