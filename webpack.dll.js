@@ -9,7 +9,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
 	mode: 'production',
 	entry: {
-		venders: ['react', 'jquery'],
+		venders: ['react', 'react-dom', 'jquery'],
 		assets: ['@ant-design/icons/lib/dist.js']
 	},
 	output: {

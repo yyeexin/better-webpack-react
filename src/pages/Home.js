@@ -4,7 +4,7 @@ const Home = () => {
 	const [count, setCount] = useState(0)
 	return (
 		<div>
-			Home111 Page {count} <button onClick={() => setCount(count + 1)}>+1</button>
+			Home Page {count} <button onClick={() => setCount(count + 1)}>+1</button>
 		</div>
 	)
 }
