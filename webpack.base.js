@@ -23,9 +23,42 @@ module.exports = {
 		}
 	},
 	module: {
-		noParse: /jquery/ //不去解析这个包的内部依赖,加快解析速度
+		noParse: /jquery/, //不去解析这个包的内部依赖,加快解析速度
+		rules: [
+			// 处理图片(file-loader来处理也可以，url-loader更适合图片)
+			{
+				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+				loader: 'url-loader',
+				options: {
+					limit: 8192,
+					name: 'image/[name].[hash:8].[ext]'
+				}
+			},
+			// 处理多媒体文件
+			{
+				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+				loader: 'url-loader',
+				options: {
+					limit: 10000,
+					name: 'media/[name].[hash:8].[ext]'
+				}
+			},
+			// 处理字体文件
+			{
+				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+				loader: 'url-loader',
+				options: {
+					limit: 10000,
+					name: 'fonts/[name].[hash:8].[ext]'
+				}
+			}
+		]
 	},
 	plugins: [
+		new webpack.ProvidePlugin({
+			// 大量需要使用到的模块，在此处一次性注入，避免到处import/require。
+			React: 'react'
+		}),
 		new HtmlWebpackPlugin({
 			template: './public/index.html',
 			filename: 'index.html',
@@ -57,7 +90,7 @@ module.exports = {
 		)
 	]),
 	externals: {
-		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
+		$: 'jquery' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 	},
 	optimization: {
 		splitChunks: {

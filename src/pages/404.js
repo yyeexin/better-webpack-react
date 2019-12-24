@@ -1,6 +1,6 @@
 import React from 'react'
 
-import image from 'assets/img/sd.jpg'
+import image from 'assets/image/sd.jpg'
 const page404 = () => {
 	return (
 		<div style={{ textAlign: 'center' }}>

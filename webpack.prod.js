@@ -39,16 +39,6 @@ module.exports = smart(base, {
 				test: /\.less$/,
 				exclude: /node_modules/,
 				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=less']
-			},
-			{
-				test: /\.(jpg|png|gif|svg)$/,
-				use: {
-					loader: 'url-loader',
-					options: {
-						limit: 8192,
-						outputPath: 'image'
-					}
-				}
 			}
 		]
 	},
