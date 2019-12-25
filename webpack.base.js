@@ -23,7 +23,7 @@ module.exports = {
 		}
 	},
 	module: {
-		noParse: /jquery/, //不去解析这个包的内部依赖,加快解析速度
+		// noParse: /jquery/, //不去解析这个包的内部依赖,加快解析速度
 		rules: [
 			// 处理图片(file-loader来处理也可以，url-loader更适合图片)
 			{
@@ -90,7 +90,10 @@ module.exports = {
 		)
 	]),
 	externals: {
-		$: 'jquery' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
+		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
+	},
+	performance: {
+		hints: false
 	},
 	optimization: {
 		splitChunks: {

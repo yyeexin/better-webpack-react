@@ -28,5 +28,8 @@ module.exports = {
 			name: 'dll_[name]',
 			path: path.resolve(__dirname, 'dll', 'manifest_[name].json')
 		})
-	]
+	],
+	performance: {
+		hints: false
+	}
 }
