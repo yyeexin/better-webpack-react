@@ -9,8 +9,9 @@ const DLLs = getDLLs()
 module.exports = {
 	entry: ['react-hot-loader/patch', './src/index.js'],
 	output: {
-		filename: '[name].[hash:8].js', //打包后的文件名
-		path: path.resolve(__dirname, 'dist') //路径必须是一个决定路径
+		filename: '[name].[hash:6].js', //打包后的文件名
+		path: path.resolve(__dirname, 'dist'), //路径必须是一个决定路径
+		chunkFilename: 'chunk/[name].[hash:6].js' //非主文件的命名规则
 	},
 	resolve: {
 		extensions: ['.js', '.css', '.json'], //省略文件后缀名
@@ -31,7 +32,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 8192,
-					name: 'image/[name].[hash:8].[ext]'
+					name: 'image/[name].[hash:6].[ext]'
 				}
 			},
 			// 处理多媒体文件
@@ -40,7 +41,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: 'media/[name].[hash:8].[ext]'
+					name: 'media/[name].[hash:6].[ext]'
 				}
 			},
 			// 处理字体文件
@@ -49,7 +50,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: 'fonts/[name].[hash:8].[ext]'
+					name: 'fonts/[name].[hash:6].[ext]'
 				}
 			}
 		]
