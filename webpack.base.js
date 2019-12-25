@@ -60,7 +60,7 @@ module.exports = {
 			React: 'react'
 		}),
 		new HtmlWebpackPlugin({
-			template: './public/index.html',
+			template: './src/index.html',
 			filename: 'index.html',
 			hash: true,
 			minify: {
