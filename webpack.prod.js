@@ -49,7 +49,7 @@ module.exports = smart(base, {
 		new Happypack({
 			id: 'js',
 			threadPool: happyThreadPool,
-			loaders: ['babel-loader']
+			loaders: [{ loader: 'babel-loader', options: { cacheDirectory: true } }]
 		}),
 		new Happypack({
 			id: 'css',

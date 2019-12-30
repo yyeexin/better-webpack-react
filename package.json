@@ -51,7 +51,7 @@
 		"@babel/runtime-corejs3": "^7.7.7",
 		"@hot-loader/react-dom": "^16.11.0",
 		"antd": "^3.26.4",
-		"dva": "^2.4.1",
+		"dva": "2.6.0-beta.19",
 		"dva-loading": "^3.0.20",
 		"react": "^16.12.0",
 		"react-hot-loader": "^4.12.18"

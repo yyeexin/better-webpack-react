@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
-import dynamic from 'dva/dynamic'
-import { Route, Switch, routerRedux, HashRouter, Redirect } from 'dva/router'
+import { dynamic, routerRedux, router as dvarouter } from 'dva'
+const { Route, Switch, HashRouter, Redirect } = dvarouter
 const { ConnectedRouter } = routerRedux
 
 const router = ({ history, app }) => {

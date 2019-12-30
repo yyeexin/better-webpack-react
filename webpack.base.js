@@ -33,7 +33,8 @@ module.exports = {
 				options: {
 					limit: 8192,
 					name: 'image/[name].[hash:6].[ext]'
-				}
+				},
+				exclude: /node_modules/
 			},
 			// 处理多媒体文件
 			{
@@ -42,7 +43,8 @@ module.exports = {
 				options: {
 					limit: 10000,
 					name: 'media/[name].[hash:6].[ext]'
-				}
+				},
+				exclude: /node_modules/
 			},
 			// 处理字体文件
 			{
@@ -51,7 +53,8 @@ module.exports = {
 				options: {
 					limit: 10000,
 					name: 'fonts/[name].[hash:6].[ext]'
-				}
+				},
+				exclude: /node_modules/
 			}
 		]
 	},
@@ -63,6 +66,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 			filename: 'index.html',
+			favicon: './src/favicon.ico',
 			hash: true,
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
