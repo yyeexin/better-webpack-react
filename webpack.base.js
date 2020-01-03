@@ -11,7 +11,7 @@ module.exports = {
 	output: {
 		filename: '[name].[hash:6].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist'), //路径必须是一个决定路径
-		chunkFilename: 'chunk/[name].[hash:6].js' //非主文件的命名规则
+		chunkFilename: 'chunk/[name].[chunkhash:6].js' //非主文件的命名规则
 	},
 	resolve: {
 		extensions: ['.js', '.css', '.json'], //省略文件后缀名
