@@ -1,5 +1,5 @@
 {
-	"name": "study-webpack",
+	"name": "better-webpack-react",
 	"version": "1.0.0",
 	"main": "index.js",
 	"license": "MIT",
@@ -48,10 +48,11 @@
 		"webpack-merge": "^4.2.2"
 	},
 	"dependencies": {
+		"@ant-design/icons": "^4.0.0-alpha.19",
 		"@babel/runtime-corejs3": "^7.7.7",
 		"@hot-loader/react-dom": "^16.11.0",
-		"antd": "^3.26.4",
-		"dva": "2.6.0-beta.19",
+		"antd": "^4.0.0-rc.0",
+		"dva": "^2.6.0-beta.20",
 		"dva-loading": "^3.0.20",
 		"react": "^16.12.0",
 		"react-hot-loader": "^4.12.18"
