@@ -10,6 +10,10 @@ const router = ({ history, app }) => {
 			component: () => import('./pages/Home')
 		},
 		{
+			path: '/login',
+			component: () => import('./pages/Login')
+		},
+		{
 			path: '/user',
 			component: () => import('./pages/User')
 		},
@@ -18,7 +22,7 @@ const router = ({ history, app }) => {
 			component: () => import('./pages/Shop')
 		},
 		{
-			path: '/page404',
+			path: '/notFound',
 			component: () => import('./pages/404')
 		}
 	]
@@ -31,7 +35,7 @@ const router = ({ history, app }) => {
 						{routes.map(({ path, ...rest }, index) => {
 							return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
 						})}
-						<Redirect from='/*' to='/page404' />
+						<Redirect from='/*' to='/notFound' />
 					</Switch>
 				</HashRouter>
 			</Suspense>

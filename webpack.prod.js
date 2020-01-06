@@ -26,50 +26,38 @@ module.exports = smart(base, {
 				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			},
 			{
-				test: /\.css$/,
+				test: /\.(less|css)$/,
 				exclude: /node_modules/,
-				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=css']
-			},
-			{
-				test: /\.scss$/,
-				exclude: /node_modules/,
-				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=scss']
-			},
-			{
-				test: /\.less$/,
-				exclude: /node_modules/,
-				use: [MiniCssExtractPlugin.loader, 'happypack/loader?id=less']
+				use: [
+					MiniCssExtractPlugin.loader,
+					{ loader: 'css-loader', options: { modules: true } },
+					'postcss-loader',
+					{ loader: 'less-loader', options: { javascriptEnabled: true } }
+				]
 			}
 		]
 	},
 	plugins: [
-		new MiniCssExtractPlugin({ filename: 'main.css' }),
+		new MiniCssExtractPlugin({
+			filename: 'css/[name].[contenthash:6].css', // 注意这里使用的是contenthash，否则任意的js改动，打包时都会导致css的文件名也跟着变动。
+			chunkFilename: 'css/[name].[contenthash:6].css'
+		}),
 		new CleanWebpackPlugin(),
 		new BundleAnalyzerPlugin(),
 		new Happypack({
 			id: 'js',
 			threadPool: happyThreadPool,
 			loaders: [{ loader: 'babel-loader', options: { cacheDirectory: true } }]
-		}),
-		new Happypack({
-			id: 'css',
-			threadPool: happyThreadPool,
-			loaders: [{ loader: 'css-loader', options: { modules: true } }, 'postcss-loader']
-		}),
-		new Happypack({
-			id: 'less',
-			threadPool: happyThreadPool,
-			loaders: [
-				{ loader: 'css-loader', options: { modules: true } },
-				'postcss-loader',
-				{ loader: 'less-loader', options: { javascriptEnabled: true } }
-			]
-		}),
-		new Happypack({
-			id: 'scss',
-			threadPool: happyThreadPool,
-			loaders: [{ loader: 'css-loader', options: { modules: true } }, 'postcss-loader', 'sass-loader']
 		})
+		// new Happypack({
+		// 	id: 'less',
+		// 	threadPool: happyThreadPool,
+		// 	loaders: [
+		// 		{ loader: 'css-loader', options: { modules: true } },
+		// 		'postcss-loader',
+		// 		{ loader: 'less-loader', options: { javascriptEnabled: true } }
+		// 	]
+		// })
 	],
 	optimization: {
 		minimizer: [

@@ -30,7 +30,6 @@ module.exports = smart(base, {
 				pathRewrite: { '/api': '' }
 			}
 		},
-		//mock接口
 		before(app) {
 			app.get('/user', (req, res) => {
 				res.json({
@@ -53,19 +52,9 @@ module.exports = smart(base, {
 				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			},
 			{
-				test: /\.css$/,
+				test: /\.(less|css)$/,
 				exclude: /node_modules/,
 				use: 'happypack/loader?id=css'
-			},
-			{
-				test: /\.scss$/,
-				exclude: /node_modules/,
-				use: 'happypack/loader?id=scss'
-			},
-			{
-				test: /\.less$/,
-				exclude: /node_modules/,
-				use: 'happypack/loader?id=less'
 			}
 		]
 	},
@@ -86,33 +75,12 @@ module.exports = smart(base, {
 		new Happypack({
 			id: 'css',
 			threadPool: happyThreadPool,
-			loaders: ['style-loader', { loader: 'css-loader', options: { modules: true } }, 'postcss-loader']
-		}),
-		new Happypack({
-			id: 'less',
-			threadPool: happyThreadPool,
 			loaders: [
 				'style-loader',
 				{ loader: 'css-loader', options: { modules: true } },
 				'postcss-loader',
 				{ loader: 'less-loader', options: { javascriptEnabled: true } }
 			]
-		}),
-		new Happypack({
-			id: 'scss',
-			threadPool: happyThreadPool,
-			loaders: [
-				'style-loader',
-				{ loader: 'css-loader', options: { modules: true } },
-				'postcss-loader',
-				'sass-loader'
-			]
 		})
 	]
-	// watch: true, //实时打包
-	// watchOptions: {
-	// 	poll: 1000, //每秒监控多少次
-	// 	aggreatement: 500, //输入防抖
-	// 	ignored: /node_moudles/ //不需要监控哪个文件
-	// },
 })
