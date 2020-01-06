@@ -13,30 +13,31 @@ import {
 } from '@ant-design/icons'
 import style_css from './test.css'
 import style_less from './test.less'
-const Home = () => {
-	const Button = styled.a`
-		display: inline-block;
-		border-radius: 3px;
-		padding: 0.5rem 0;
-		margin: 0.5rem 1rem;
-		width: 11rem;
-		background: transparent;
-		color: white;
-		border: 2px solid pink;
-		text-align: center;
-		${props =>
-			props.primary &&
-			`
-				background: white;
-				color: palevioletred;
-			`}
-	`
-	const [count, setCount] = useState(0)
 
-	const TestP = styled.p`
-		font-size: 50px;
-		color: yellow;
-	`
+const Button = styled.a`
+	display: inline-block;
+	border-radius: 3px;
+	padding: 0.5rem 0;
+	margin: 0.5rem 1rem;
+	width: 11rem;
+	background: transparent;
+	color: white;
+	border: 2px solid pink;
+	text-align: center;
+	${props =>
+		props.primary &&
+		`
+		background: white;
+		color: palevioletred;
+	`}
+`
+const TestP = styled.p`
+	font-size: 50px;
+	color: yellow;
+`
+
+const Home = () => {
+	const [count, setCount] = useState(0)
 	return (
 		<div>
 			<p class={style_css.title}>test css</p>
@@ -51,10 +52,10 @@ const Home = () => {
 				GitHub
 			</Button>
 			<br />
-			<video
+			{/* <video
 				controls='controls'
 				style={{ height: 300 }}
-				src={require('../../assets/media/test-video.mp4')}></video>
+				src={require('../../assets/media/test-video.mp4')}></video> */}
 			<br />
 			<HomeOutlined />
 			<SettingFilled />
