@@ -8,7 +8,7 @@ const path = require('path')
 const os = require('os')
 const Happypack = require('happypack')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
-const base = require('./webpack.base.js')
+const base = require('./webpack.config.base.js')
 
 module.exports = smart(base, {
 	mode: 'production',

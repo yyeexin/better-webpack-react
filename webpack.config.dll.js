@@ -10,7 +10,7 @@ module.exports = {
 	mode: 'production',
 	entry: {
 		venders: ['react', '@hot-loader/react-dom']
-		// assets: ['@ant-design/icons/lib/dist.js']
+		// icons: ['@ant-design/icons']
 	},
 	output: {
 		filename: 'dll_[name].js',
