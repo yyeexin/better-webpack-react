@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from 'antd'
 import styled from 'styled-components'
 import { hot } from 'react-hot-loader/root'
 import {
@@ -14,7 +15,7 @@ import {
 import style_css from './test.css'
 import style_less from './test.less'
 
-const Button = styled.a`
+const MyButton = styled.a`
 	display: inline-block;
 	border-radius: 3px;
 	padding: 0.5rem 0;
@@ -40,17 +41,17 @@ const Home = () => {
 	const [count, setCount] = useState(0)
 	return (
 		<div>
-			<p class={style_css.title}>test css</p>
-			<p class={style_less.title}>test less</p>
+			<p className={style_css.title}>test css</p>
+			<p className={style_less.title}>test less</p>
 			<TestP>test styled</TestP>
-			Home Page {count} <button onClick={() => setCount(count + 1)}>+1</button>
-			<Button
+			Home Page {count} <Button onClick={() => setCount(count + 1)}>+1</Button>
+			<MyButton
 				href='https://github.com/styled-components/styled-components'
 				target='_blank'
 				rel='noopener'
 				primary>
 				GitHub
-			</Button>
+			</MyButton>
 			<br />
 			{/* <video
 				controls='controls'

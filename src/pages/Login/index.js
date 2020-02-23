@@ -1,74 +1,71 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Form, Input, Button, Checkbox } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import login_bg from 'assets/image/login_bg.jpg'
+import login_logo from 'assets/image/logo.jpg'
+import { hot } from 'react-hot-loader/root'
 
-const layout = {
-	labelCol: {
-		span: 8
-	},
-	wrapperCol: {
-		span: 8
-	}
-}
-const tailLayout = {
-	wrapperCol: {
-		offset: 8,
-		span: 16
-	}
-}
+const StyledDiv = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: url('${login_bg}') no-repeat center / 100% 100%;
+`
+
+const FormContent = styled.div`
+	width: 320px;
+	height: 320px;
+	padding: 36px;
+	box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+	background: #fff;
+	border-radius: 5px;
+`
 
 const Login = () => {
 	const onFinish = values => {
-		console.log('Success:', values)
-	}
-
-	const onFinishFailed = errorInfo => {
-		console.log('Failed:', errorInfo)
+		console.log('Received values of form: ', values)
 	}
 
 	return (
-		<Form
-			{...layout}
-			name='basic'
-			initialValues={{
-				remember: true
-			}}
-			onFinish={onFinish}
-			onFinishFailed={onFinishFailed}>
-			<Form.Item
-				label='Username'
-				name='username'
-				rules={[
-					{
-						required: true,
-						message: 'Please input your username!'
-					}
-				]}>
-				<Input />
-			</Form.Item>
-
-			<Form.Item
-				label='Password'
-				name='password'
-				rules={[
-					{
-						required: true,
-						message: 'Please input your password!'
-					}
-				]}>
-				<Input.Password />
-			</Form.Item>
-
-			<Form.Item {...tailLayout} name='remember' valuePropName='checked'>
-				<Checkbox>Remember me</Checkbox>
-			</Form.Item>
-
-			<Form.Item {...tailLayout}>
-				<Button type='primary' htmlType='submit'>
-					Submit
-				</Button>
-			</Form.Item>
-		</Form>
+		<StyledDiv>
+			<FormContent>
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+						marginBottom: 10,
+						fontSize: 16
+					}}>
+					<img src={login_logo} style={{ width: 40, marginRight: 8 }} />
+					<span>古茗电商</span>
+				</div>
+				<Form initialValues={{ remember: true }} onFinish={onFinish}>
+					<Form.Item name='username' rules={[{ required: true, message: '请输入用户名!' }]}>
+						<Input prefix={<UserOutlined />} placeholder='用户名' />
+					</Form.Item>
+					<Form.Item name='password' rules={[{ required: true, message: '请输入密码!' }]}>
+						<Input prefix={<LockOutlined />} type='password' placeholder='密码' />
+					</Form.Item>
+					<Form.Item>
+						<Form.Item name='remember' valuePropName='checked' noStyle>
+							<Checkbox>记住账号</Checkbox>
+						</Form.Item>
+						<a href='' style={{ float: 'right' }}>
+							忘记密码
+						</a>
+					</Form.Item>
+					<Form.Item>
+						<Button type='primary' htmlType='submit' block>
+							登录
+						</Button>
+					</Form.Item>
+				</Form>
+			</FormContent>
+		</StyledDiv>
 	)
 }
 
-export default Login
+export default hot(Login)
