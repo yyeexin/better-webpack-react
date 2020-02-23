@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { dynamic, routerRedux, router as dvarouter } from 'dva'
 const { Route, Switch, HashRouter, Redirect } = dvarouter
 const { ConnectedRouter } = routerRedux
+import Layout from './layout'
 
 const router = ({ history, app }) => {
 	const routes = [
@@ -31,12 +32,14 @@ const router = ({ history, app }) => {
 		<ConnectedRouter history={history}>
 			<Suspense fallback={<div>Loading...</div>}>
 				<HashRouter>
-					<Switch>
-						{routes.map(({ path, ...rest }, index) => {
-							return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
-						})}
-						<Redirect from='/*' to='/notFound' />
-					</Switch>
+					<Layout routeConfig={routes}>
+						<Switch>
+							{routes.map(({ path, ...rest }, index) => {
+								return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
+							})}
+							<Redirect from='/*' to='/notFound' />
+						</Switch>
+					</Layout>
 				</HashRouter>
 			</Suspense>
 		</ConnectedRouter>
