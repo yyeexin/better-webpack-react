@@ -49,15 +49,6 @@ module.exports = smart(base, {
 			threadPool: happyThreadPool,
 			loaders: [{ loader: 'babel-loader', options: { cacheDirectory: true } }]
 		})
-		// new Happypack({
-		// 	id: 'less',
-		// 	threadPool: happyThreadPool,
-		// 	loaders: [
-		// 		{ loader: 'css-loader', options: { modules: true } },
-		// 		'postcss-loader',
-		// 		{ loader: 'less-loader', options: { javascriptEnabled: true } }
-		// 	]
-		// })
 	],
 	optimization: {
 		minimizer: [

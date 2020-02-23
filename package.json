@@ -6,8 +6,6 @@
 	"scripts": {
 		"dev": "webpack-dev-server --config webpack.config.dev.js",
 		"build": "webpack --config webpack.config.prod.js",
-		"dll": "webpack --config webpack.config.dll.js",
-		"build:dll": "npm run dll && webpack --config webpack.config.prod.js",
 		"push": "git add . && git commit -m \"commit\" && git pull && git push"
 	},
 	"devDependencies": {

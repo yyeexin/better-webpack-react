@@ -3,9 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
-const getDLLs = require('./scripts/getDLLs')
-const DLLs = getDLLs()
-
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 module.exports = {
 	entry: ['react-hot-loader/patch', './src/index.js'],
 	output: {
@@ -59,6 +57,8 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new HardSourceWebpackPlugin(),
+		new CopyWebpackPlugin(),
 		new webpack.ProvidePlugin({
 			// 大量需要使用到的模块，在此处一次性注入，避免到处import/require。
 			React: 'react'
@@ -74,26 +74,11 @@ module.exports = {
 			}
 		}),
 		new webpack.IgnorePlugin(/\.\/locale/, /moment/), //忽略moment内容自动引入所有语言包的行为,减小打包体积
-		new CopyWebpackPlugin([
-			{
-				from: './dll',
-				to: path.resolve(__dirname, './dist/dll'),
-				toType: 'dir',
-				ignore: ['*.json']
-			}
-		]),
 		new HtmlWebpackTagsPlugin({
-			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js', ...DLLs.dlls_url],
+			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'],
 			append: false
 		})
-	].concat([
-		...DLLs.manifests.map(
-			manifest =>
-				new webpack.DllReferencePlugin({
-					manifest: path.resolve(__dirname, 'dll', manifest) //引用动态链接库
-				})
-		)
-	]),
+	],
 	externals: {
 		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源
 	},
