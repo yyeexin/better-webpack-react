@@ -23,6 +23,10 @@ const router = ({ history, app }) => {
 			component: () => import('./pages/Shop')
 		},
 		{
+			path: '/hooks',
+			component: () => import('./pages/Hooks')
+		},
+		{
 			path: '/notFound',
 			component: () => import('./pages/404')
 		}
