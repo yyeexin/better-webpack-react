@@ -41,6 +41,7 @@
 		"webpack-merge": "^4.2.2"
 	},
 	"dependencies": {
+		"@ant-design/compatible": "^0.0.1-rc.1",
 		"@ant-design/icons": "^4.0.0-alpha.19",
 		"@hot-loader/react-dom": "^16.11.0",
 		"antd": "^4.0.0-rc.5",

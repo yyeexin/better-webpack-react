@@ -5,6 +5,8 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import login_bg from 'assets/image/login_bg.jpg'
 import login_logo from 'assets/image/logo.jpg'
 import { hot } from 'react-hot-loader/root'
+import { routerRedux } from 'dva/router'
+import { connect } from 'dva'
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -23,9 +25,24 @@ const FormContent = styled.div`
 	border-radius: 5px;
 `
 
-const Login = () => {
-	const onFinish = values => {
-		console.log('Received values of form: ', values)
+const Login = props => {
+	const onFinish = ({ account, password }) => {
+		fetch('/api/login', {
+			method: 'POST',
+			body: JSON.stringify({ account, password })
+		})
+			.then(res => res.json())
+			.then(res => {
+				console.log(res)
+				const { message } = res
+				if (message === 'success') {
+					props.dispatch(
+						routerRedux.push({
+							pathname: `/home`
+						})
+					)
+				}
+			})
 	}
 
 	return (
@@ -43,7 +60,7 @@ const Login = () => {
 					<span>古茗电商</span>
 				</div>
 				<Form initialValues={{ remember: true }} onFinish={onFinish}>
-					<Form.Item name='username' rules={[{ required: true, message: '请输入用户名!' }]}>
+					<Form.Item name='account' rules={[{ required: true, message: '请输入用户名!' }]}>
 						<Input prefix={<UserOutlined />} placeholder='用户名' />
 					</Form.Item>
 					<Form.Item name='password' rules={[{ required: true, message: '请输入密码!' }]}>
@@ -68,4 +85,4 @@ const Login = () => {
 	)
 }
 
-export default hot(Login)
+export default connect(({ dispatch }) => ({ dispatch }))(hot(Login))

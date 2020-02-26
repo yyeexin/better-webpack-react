@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { dynamic, routerRedux, router as dvarouter } from 'dva'
 const { Route, Switch, HashRouter, Redirect } = dvarouter
 const { ConnectedRouter } = routerRedux
-import Layout from './layout'
+import Layout from './layouts'
 
 const router = ({ history, app }) => {
 	const routes = [

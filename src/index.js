@@ -2,6 +2,7 @@ import dva from 'dva'
 import createLoading from 'dva-loading'
 import router from './router'
 import models from './models'
+import './global.less'
 // 1. Initialize
 const app = dva()
 
