@@ -45,4 +45,12 @@ const request = extend({
 	credentials: 'include' // 默认请求是否带上cookie
 })
 
+// 提前对响应做异常处理
+request.interceptors.response.use(async response => {
+	const data = await response.clone().json()
+	const { status } = data
+	if (status === 403) return (location.href = '/#/login')
+	return response
+})
+
 export default ({ url, ...options }) => request(url, options)
