@@ -41,7 +41,8 @@ const router = ({ history, app }) => {
 							{routes.map(({ path, ...rest }, index) => {
 								return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
 							})}
-							<Redirect from='/*' to='/notFound' />
+							<Route component={dynamic({ app, component: () => import('./pages/404') })} />
+							{/* <Redirect from='/*' to='/notFound' /> */}
 						</Switch>
 					</Layout>
 				</HashRouter>

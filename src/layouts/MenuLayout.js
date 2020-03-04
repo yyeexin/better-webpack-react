@@ -1,22 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, memo } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
-import { connect } from 'dva'
 import { Icon } from '@ant-design/compatible'
-const { Header, Content, Footer, Sider } = Layout
-const { SubMenu } = Menu
-import logo from 'assets/image/logo.jpg'
+import { connect } from 'dva'
 import { Link } from 'dva/router'
+import logo from 'assets/image/logo.jpg'
+const { Header, Content, Footer, Sider } = Layout
 
-const MenuLayout = ({ router, children, dispatch, app }) => {
-	const [collapsed, setCollapsed] = useState(false)
+const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	const { menus } = app
+	const [collapsed, setCollapsed] = useState(false)
+
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
 	}, [])
-
-	const toggle = () => {
-		setCollapsed(collapsed => !collapsed)
-	}
 
 	const generateMenus = (menus, collapsed) => {
 		return menus.map(item => {
@@ -47,22 +43,67 @@ const MenuLayout = ({ router, children, dispatch, app }) => {
 		})
 	}
 
+	const flatMenus = menus => {
+		return menus.reduce((previousValue, currentValue) => {
+			previousValue.push(currentValue)
+			if (currentValue.children && currentValue.children.length) {
+				Array.prototype.push.apply(previousValue, flatMenus(currentValue.children))
+			}
+			return previousValue
+		}, [])
+	}
+
+	const flatedMenus = useMemo(() => {
+		// console.log('扁平菜单数据')
+		return flatMenus(menus)
+	}, [menus])
+
+	const generateBreads = currentPath => {
+		function getBreadCrumbArray(menu, breadArray) {
+			breadArray.unshift(menu)
+			if (menu.menuPcode && menu.menuPcode !== '001') {
+				const parentMenu = flatedMenus.find(item => item.menuCode === menu.menuPcode)
+				getBreadCrumbArray(parentMenu, breadArray)
+			}
+		}
+		const current = flatedMenus.find(item => currentPath == item.menuUrl)
+		const breadArray = []
+		current && getBreadCrumbArray(current, breadArray)
+		return breadArray
+	}
+
+	const breadCrumbArray = useMemo(() => {
+		// console.log('生成面包屑')
+		return generateBreads(location.pathname)
+	}, [location.pathname, menus])
+
+	const menusItems = useMemo(() => {
+		// console.log('生成菜单')
+		return generateMenus(menus, collapsed)
+	}, [menus])
+
 	return (
 		<Layout style={{ height: '100vh' }}>
-			<Sider collapsible collapsed={collapsed} onCollapse={toggle}>
+			<Sider
+				collapsible
+				collapsed={collapsed}
+				onCollapse={() => {
+					setCollapsed(collapsed => !collapsed)
+				}}>
 				<div className='menu-logo'>
 					<img src={logo} />
 					{!collapsed && <span>古茗电商</span>}
 				</div>
-				<Menu theme='dark' defaultSelectedKeys={['1']} mode={collapsed ? 'vertical' : 'inline'}>
-					{generateMenus(menus, collapsed)}
+				<Menu theme='dark' defaultSelectedKeys={['001007']} mode={collapsed ? 'vertical' : 'inline'}>
+					{menusItems}
 				</Menu>
 			</Sider>
 			<Layout>
-				<Header style={{ backgroundColor: '#fff', height: 40 }}>
+				<Header style={{ backgroundColor: '#fff', height: 60, display: 'flex', alignItems: 'center' }}>
 					<Breadcrumb>
-						<Breadcrumb.Item>User</Breadcrumb.Item>
-						<Breadcrumb.Item>Bill</Breadcrumb.Item>
+						{breadCrumbArray.map(item => (
+							<Breadcrumb.Item key={item.menuCode}>{item.menuName}</Breadcrumb.Item>
+						))}
 					</Breadcrumb>
 				</Header>
 				<Content>{children}</Content>
@@ -72,6 +113,6 @@ const MenuLayout = ({ router, children, dispatch, app }) => {
 			</Layout>
 		</Layout>
 	)
-}
+})
 
-export default connect(({ dispatch, app }) => ({ dispatch, app }))(MenuLayout)
+export default connect(({ dispatch, app, router }) => ({ dispatch, app, router }))(MenuLayout)

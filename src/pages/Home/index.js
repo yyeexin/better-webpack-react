@@ -41,7 +41,8 @@ const Home = () => {
 	const [count, setCount] = useState(0)
 	return (
 		<div>
-			<p className={style_css.title}>test css</p>
+			Home Page
+			{/* <p className={style_css.title}>test css</p>
 			<p className={style_less.title}>test less</p>
 			<TestP>test styled</TestP>
 			Home Page {count} <Button onClick={() => setCount(count + 1)}>+1</Button>
@@ -53,11 +54,6 @@ const Home = () => {
 				GitHub
 			</MyButton>
 			<br />
-			{/* <video
-				controls='controls'
-				style={{ height: 300 }}
-				src={require('../../assets/media/test-video.mp4')}></video> */}
-			<br />
 			<HomeOutlined />
 			<SettingFilled />
 			<SmileOutlined />
@@ -66,7 +62,7 @@ const Home = () => {
 			<LoadingOutlined />
 			<SmileTwoTone />
 			<HeartTwoTone twoToneColor='#eb2f96' />
-			<CheckCircleTwoTone twoToneColor='#52c41a' />
+			<CheckCircleTwoTone twoToneColor='#52c41a' /> */}
 		</div>
 	)
 }
