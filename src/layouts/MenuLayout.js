@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, memo } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd'
+import { Layout, Menu, Breadcrumb, Switch } from 'antd'
 import { Icon } from '@ant-design/compatible'
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { connect } from 'dva'
 import { Link } from 'dva/router'
 import logo from 'assets/image/logo.jpg'
@@ -12,6 +13,17 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
+		let timer
+		window.addEventListener('resize', () => {
+			if (timer) clearTimeout(timer)
+			timer = setTimeout(() => {
+				setCollapsed(() => document.body.clientWidth < 769)
+			}, 300)
+		})
+		return () => {
+			clearTimeout(timer)
+			window.removeEventListener('resize')
+		}
 	}, [])
 
 	const generateMenus = (menus, collapsed) => {
@@ -84,12 +96,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 
 	return (
 		<Layout style={{ height: '100vh' }}>
-			<Sider
-				collapsible
-				collapsed={collapsed}
-				onCollapse={() => {
-					setCollapsed(collapsed => !collapsed)
-				}}>
+			<Sider collapsed={collapsed} onCollapse={() => setCollapsed(collapsed => !collapsed)}>
 				<div className='menu-logo'>
 					<img src={logo} />
 					{!collapsed && <span>古茗电商</span>}
@@ -97,15 +104,36 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 				<Menu theme='dark' defaultSelectedKeys={['001007']} mode={collapsed ? 'vertical' : 'inline'}>
 					{menusItems}
 				</Menu>
+				{!collapsed && (
+					<div>
+						<span>
+							<Icon type='bulb' />
+							切换主题风格
+						</span>
+						<Switch
+							// onChange={changeTheme}
+							// defaultChecked={darkTheme}
+							checkedChildren='深色'
+							unCheckedChildren='浅色'
+						/>
+					</div>
+				)}
 			</Sider>
 			<Layout>
-				<Header style={{ backgroundColor: '#fff', height: 60, display: 'flex', alignItems: 'center' }}>
-					<Breadcrumb>
-						{breadCrumbArray.map(item => (
-							<Breadcrumb.Item key={item.menuCode}>{item.menuName}</Breadcrumb.Item>
-						))}
-					</Breadcrumb>
+				<Header style={{ backgroundColor: '#fff', height: 40, display: 'flex', alignItems: 'center' }}>
+					{React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+						className: 'trigger',
+						onClick: () => setCollapsed(collapsed => !collapsed)
+					})}
 				</Header>
+				<Breadcrumb>
+					{breadCrumbArray.map(item => (
+						<Breadcrumb.Item key={item.menuCode}>
+							<Icon type={item.menuIcon} />
+							<span>{item.menuName}</span>
+						</Breadcrumb.Item>
+					))}
+				</Breadcrumb>
 				<Content>{children}</Content>
 				<Footer style={{ height: 50, textAlign: 'center', padding: '10px 0' }}>
 					Ant Design ©2020 Created by Ant UED
