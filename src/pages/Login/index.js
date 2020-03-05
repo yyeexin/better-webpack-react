@@ -33,7 +33,6 @@ const Login = props => {
 		})
 			.then(res => res.json())
 			.then(res => {
-				console.log(res)
 				const { message } = res
 				if (message === 'success') {
 					props.dispatch(

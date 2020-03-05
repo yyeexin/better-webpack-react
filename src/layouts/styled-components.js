@@ -32,7 +32,37 @@ export const ThemeSwitchDiv = styled.div`
 	background-color: ${props => (props.dark ? '#002140' : '#ffffff')};
 	color: ${props => (props.dark ? '#ffffff' : '#000000')};
 `
+
 export const GlobalMenuStyle = createGlobalStyle`
+.ant-layout-sider-children {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	.ant-menu-root {
+		padding-bottom: ${props => (props.collapsed ? '0' : '48px')};
+	}
+}
+
+.ant-layout-header {
+	padding-left: 0;
+	.trigger {
+		font-size: 18px;
+		line-height: 40px;
+		padding: 0 24px;
+		cursor: pointer;
+		transition: color 0.3s;
+	}
+	.trigger:hover {
+		color: #1890ff;
+		background-color: rgba(16, 142, 233, 0.15);
+	}
+}
+
+.ant-breadcrumb {
+	height: 40px;
+	line-height: 40px;
+	padding: 0 24px;
+}
+
 ::-webkit-scrollbar {
 	width: 2px;
 }

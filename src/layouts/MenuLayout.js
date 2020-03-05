@@ -17,15 +17,16 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
 		let timer
-		window.addEventListener('resize', () => {
+		const changeMenuCollapsed = () => {
 			if (timer) clearTimeout(timer)
 			timer = setTimeout(() => {
 				setCollapsed(() => document.body.clientWidth < 769)
 			}, 300)
-		})
+		}
+		window.addEventListener('resize', changeMenuCollapsed)
 		return () => {
 			clearTimeout(timer)
-			window.removeEventListener('resize')
+			window.removeEventListener('resize', changeMenuCollapsed)
 		}
 	}, [])
 
@@ -96,7 +97,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 
 	return (
 		<Layout style={{ height: '100vh' }}>
-			<GlobalMenuStyle dark={checked} />
+			<GlobalMenuStyle dark={checked} collapsed={collapsed} />
 			<Sider collapsed={collapsed} onCollapse={() => setCollapsed(collapsed => !collapsed)}>
 				<MenuLogoDiv dark={checked}>
 					<img src={logo} />
