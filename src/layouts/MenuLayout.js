@@ -7,9 +7,12 @@ import { Link } from 'dva/router'
 import logo from 'assets/image/logo.jpg'
 const { Header, Content, Footer, Sider } = Layout
 
+import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
+
 const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(false)
+	const [checked, setChecked] = useState(true)
 
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
@@ -28,7 +31,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 
 	const generateMenus = (menus, collapsed) => {
 		return menus.map(item => {
-			const { id, menuIcon, menuName, menuUrl, menuCode, children = [] } = item
+			const { menuIcon, menuName, menuUrl, menuCode, children = [] } = item
 			if (children && children.length > 0) {
 				return (
 					<Menu.SubMenu
@@ -66,7 +69,6 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	}
 
 	const flatedMenus = useMemo(() => {
-		// console.log('扁平菜单数据')
 		return flatMenus(menus)
 	}, [menus])
 
@@ -85,38 +87,40 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	}
 
 	const breadCrumbArray = useMemo(() => {
-		// console.log('生成面包屑')
 		return generateBreads(location.pathname)
 	}, [location.pathname, menus])
 
 	const menusItems = useMemo(() => {
-		// console.log('生成菜单')
 		return generateMenus(menus, collapsed)
 	}, [menus])
 
 	return (
 		<Layout style={{ height: '100vh' }}>
+			<GlobalMenuStyle dark={checked} />
 			<Sider collapsed={collapsed} onCollapse={() => setCollapsed(collapsed => !collapsed)}>
-				<div className='menu-logo'>
+				<MenuLogoDiv dark={checked}>
 					<img src={logo} />
 					{!collapsed && <span>古茗电商</span>}
-				</div>
-				<Menu theme='dark' defaultSelectedKeys={['001007']} mode={collapsed ? 'vertical' : 'inline'}>
+				</MenuLogoDiv>
+				<Menu
+					theme={checked ? 'dark' : 'light'}
+					defaultSelectedKeys={['001007']}
+					mode={collapsed ? 'vertical' : 'inline'}>
 					{menusItems}
 				</Menu>
 				{!collapsed && (
-					<div>
+					<ThemeSwitchDiv dark={checked}>
 						<span>
 							<Icon type='bulb' />
 							切换主题风格
 						</span>
 						<Switch
-							// onChange={changeTheme}
-							// defaultChecked={darkTheme}
+							checked={checked}
+							onChange={() => setChecked(checked => !checked)}
 							checkedChildren='深色'
 							unCheckedChildren='浅色'
 						/>
-					</div>
+					</ThemeSwitchDiv>
 				)}
 			</Sider>
 			<Layout>
