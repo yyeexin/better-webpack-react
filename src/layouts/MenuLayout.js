@@ -111,10 +111,8 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 				</Menu>
 				{!collapsed && (
 					<ThemeSwitchDiv dark={checked}>
-						<span>
-							<Icon type='bulb' />
-							切换主题风格
-						</span>
+						<Icon type='bulb' />
+						<span>切换主题</span>
 						<Switch
 							checked={checked}
 							onChange={() => setChecked(checked => !checked)}

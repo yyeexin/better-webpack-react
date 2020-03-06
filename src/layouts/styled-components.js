@@ -28,7 +28,6 @@ export const ThemeSwitchDiv = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 16px 0 24px;
-	overflow: hidden;
 	background-color: ${props => (props.dark ? '#002140' : '#ffffff')};
 	color: ${props => (props.dark ? '#ffffff' : '#000000')};
 `

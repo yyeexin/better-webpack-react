@@ -9,8 +9,8 @@
 		"push": "git add . && git commit -m \"commit\" && git pull && git push"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.8.6",
-		"@babel/preset-env": "^7.8.6",
+		"@babel/core": "^7.8.7",
+		"@babel/preset-env": "^7.8.7",
 		"@babel/preset-react": "^7.8.3",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.0.6",
@@ -44,7 +44,7 @@
 		"@ant-design/compatible": "^1.0.1",
 		"@ant-design/icons": "^4.0.2",
 		"@hot-loader/react-dom": "^16.12.0",
-		"antd": "^4.0.0",
+		"antd": "^4.0.1",
 		"core-js": "^3.6.4",
 		"dva": "^2.6.0-beta.20",
 		"dva-loading": "^3.0.20",
