@@ -1,31 +1,20 @@
-import { memo, useState, useEffect } from 'react'
+const CountButton = React.memo(function CountButton({ onClick, count }) {
+	return <button onClick={onClick}>{count}</button>
+})
 
-const Child = ({ data }) => {
-	console.log('child render...', data)
-	const [name, setName] = useState(data)
+function DualCounter() {
+	const [count1, setCount1] = React.useState(0)
+	const increment1 = React.useCallback(() => setCount1(c => c + 1), [])
+
+	const [count2, setCount2] = React.useState(0)
+	const increment2 = React.useCallback(() => setCount2(c => c + 1), [])
+
 	return (
-		<div>
-			<div>child</div>
-			<div>
-				{name} --- {data}
-			</div>
-		</div>
+		<>
+			<CountButton count={count1} onClick={increment1} />
+			<CountButton count={count2} onClick={increment2} />
+		</>
 	)
 }
 
-const Hook = () => {
-	console.log('Hook render...')
-	const [count, setCount] = useState(0)
-	const [name, setName] = useState('rose')
-
-	return (
-		<div>
-			<div>{count}</div>
-			<button onClick={() => setCount(count + 1)}>update count </button>
-			<button onClick={() => setName('jack')}>update name </button>
-			<Child data={name} />
-		</div>
-	)
-}
-
-export default Hook
+export default DualCounter
