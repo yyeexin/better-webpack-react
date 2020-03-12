@@ -1,12 +1,10 @@
 import React from 'react'
+import { connect } from 'dva'
 import styled from 'styled-components'
 import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import login_bg from 'assets/image/login_bg.jpg'
 import login_logo from 'assets/image/logo.jpg'
-import { hot } from 'react-hot-loader/root'
-import { routerRedux } from 'dva/router'
-import { connect } from 'dva'
 
 const StyledDiv = styled.div`
 	display: flex;
@@ -27,21 +25,13 @@ const FormContent = styled.div`
 
 const Login = props => {
 	const onFinish = ({ account, password }) => {
-		fetch('/api/login', {
-			method: 'POST',
-			body: JSON.stringify({ account, password })
+		props.dispatch({
+			type: 'app/login',
+			payload: {
+				account,
+				password
+			}
 		})
-			.then(res => res.json())
-			.then(res => {
-				const { message } = res
-				if (message === 'success') {
-					props.dispatch(
-						routerRedux.push({
-							pathname: `/home`
-						})
-					)
-				}
-			})
 	}
 
 	return (
@@ -84,4 +74,4 @@ const Login = props => {
 	)
 }
 
-export default connect(({ dispatch }) => ({ dispatch }))(hot(Login))
+export default connect(({ dispatch, app }) => ({ dispatch, app }))(Login)

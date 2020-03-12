@@ -53,4 +53,11 @@ request.interceptors.response.use(async response => {
 	return response
 })
 
-export default ({ url, ...options }) => request(url, options)
+export default ({ url, method, payload, ...rest }) => {
+	return request(url, {
+		method,
+		...rest,
+		...(method.toLowerCase() === 'get' && { params: payload }),
+		...(method.toLowerCase() === 'post' && { data: payload })
+	})
+}
