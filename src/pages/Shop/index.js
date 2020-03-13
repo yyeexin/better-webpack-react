@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Col, Form, Input, Row, Table, Select } from 'antd'
+import { Button, Col, Form, Input, Row, Table, Select, Card, Tag, Checkbox } from 'antd'
+import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
 import { hot } from 'react-hot-loader/root'
 import { useFormTable } from '@umijs/hooks'
 const { Option } = Select
-
 const Shop = props => {
 	const getTableData = async ({ current, pageSize }, formData) => {
 		const data = await props.dispatch({
@@ -22,70 +22,143 @@ const Shop = props => {
 		defaultPageSize: 10,
 		form: form
 	})
-	console.log('loading', loading)
 
 	const { type, changeType, submit, reset } = search
 
 	const columns = [
 		{
 			title: '名称',
-			dataIndex: 'name'
+			dataIndex: 'name',
+			align: 'center',
+			fixed: true,
+			width: 200
 		},
 		{
 			title: '编码',
-			dataIndex: 'code'
+			dataIndex: 'code',
+			align: 'center',
+			width: 100
 		},
 		{
 			title: '品牌',
-			dataIndex: 'brand'
+			dataIndex: 'brand',
+			align: 'center',
+			width: 100
 		},
 		{
 			title: '管理账号',
-			dataIndex: 'account'
+			dataIndex: 'account',
+			align: 'center',
+			width: 150
 		},
 		{
 			title: '地址',
 			key: 'address',
+			align: 'center',
+			width: 300,
 			render(text, record, index) {
 				return `${record.province}${record.city}${record.district}${record.address}`
 			}
 		},
 		{
 			title: '联系人',
-			dataIndex: 'contact'
+			dataIndex: 'contact',
+			align: 'center',
+			width: 100
 		},
 		{
 			title: '联系电话',
-			dataIndex: 'phone'
+			dataIndex: 'phone',
+			align: 'center',
+			width: 150
 		},
 		{
 			title: '店铺状态',
-			dataIndex: 'status.name'
+			dataIndex: ['status', 'name'],
+			align: 'center',
+			width: 100
 		},
 		{
 			title: '启用状态',
 			dataIndex: 'enabled',
+			align: 'center',
+			width: 100,
 			render(text, record, index) {
 				return text ? '启用' : '停用'
 			}
 		},
 		{
 			title: '仓库',
-			dataIndex: 'wareHouseList[0].name'
+			dataIndex: 'wareHouseList',
+			align: 'center',
+			width: 100,
+			render(text, record, index) {
+				return (text || []).map(item => <Tag color='#f50'>{item.name}</Tag>)
+			}
 		},
 		{
 			title: '签约时间',
-			dataIndex: 'joinedTime'
+			dataIndex: 'joinedTime',
+			align: 'center',
+			width: 150
 		},
 		{
 			title: '操作',
 			key: 'operation',
+			align: 'center',
+			fixed: 'right',
+			width: 100,
 			render(text, record, index) {
-				return <a>查看</a>
+				return (
+					<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+						<EyeOutlined style={{ color: '#108ee9' }} />
+						<DeleteOutlined style={{ color: 'red' }} />
+						<EditOutlined style={{ color: 'green' }} />
+					</div>
+				)
 			}
 		}
 	]
-	return <Table columns={columns} rowKey='id' {...tableProps} />
+
+	const onFinish = values => {
+		console.log('Success:', values)
+	}
+
+	const onFinishFailed = errorInfo => {
+		console.log('Failed:', errorInfo)
+	}
+
+	const layout = {
+		wrapperCol: {
+			span: 4
+		}
+	}
+
+	return (
+		<Card>
+			<Form
+				layout='inline'
+				form={form}
+				{...layout}
+				name='basic'
+				initialValues={{}}
+				onFinish={onFinish}
+				onFinishFailed={onFinishFailed}>
+				<Form.Item name='username'>
+					<Input />
+				</Form.Item>
+				<Form.Item name='password'>
+					<Input />
+				</Form.Item>
+				<Form.Item>
+					<Button type='primary' htmlType='submit'>
+						Submit
+					</Button>
+				</Form.Item>
+			</Form>
+			<Table {...tableProps} bordered columns={columns} loading={loading} rowKey='id' scroll={{ x: true }} />
+		</Card>
+	)
 }
 
 export default connect(({ dispatch, shop }) => ({ dispatch, shop }))(hot(Shop))

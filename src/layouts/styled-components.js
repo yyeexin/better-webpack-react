@@ -64,7 +64,7 @@ export const GlobalMenuStyle = createGlobalStyle`
 
 ::-webkit-scrollbar {
 	width: 2px;
-	height: 4px;
+	height: 10px;
 }
 
 ::-webkit-scrollbar-track {

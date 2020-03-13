@@ -137,8 +137,8 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 						</Breadcrumb.Item>
 					))}
 				</Breadcrumb>
-				<Content style={{ minHeight: 'initial' }}>{children}</Content>
-				<Footer style={{ height: 50, textAlign: 'center', padding: '10px 0' }}>
+				<Content style={{ minHeight: 'initial', padding: '0 24px' }}>{children}</Content>
+				<Footer style={{ height: 50, lineHeight: '30px', textAlign: 'center', padding: '10px 0' }}>
 					Ant Design ©2020 Created by Ant UED
 				</Footer>
 			</Layout>
