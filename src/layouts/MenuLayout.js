@@ -132,7 +132,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 				<Breadcrumb>
 					{breadCrumbArray.map(item => (
 						<Breadcrumb.Item key={item.menuCode}>
-							<Icon type={item.menuIcon} />
+							{item.menuIcon && <Icon type={item.menuIcon} />}
 							<span>{item.menuName}</span>
 						</Breadcrumb.Item>
 					))}

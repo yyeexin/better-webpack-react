@@ -19,7 +19,7 @@ const router = ({ history, app }) => {
 			component: () => import('./pages/User')
 		},
 		{
-			path: '/shop',
+			path: '/shop/shops',
 			component: () => import('./pages/Shop')
 		},
 		{
