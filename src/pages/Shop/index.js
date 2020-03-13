@@ -28,20 +28,61 @@ const Shop = props => {
 
 	const columns = [
 		{
-			title: 'name',
-			dataIndex: 'name.last'
+			title: '名称',
+			dataIndex: 'name'
 		},
 		{
-			title: 'email',
-			dataIndex: 'email'
+			title: '编码',
+			dataIndex: 'code'
 		},
 		{
-			title: 'phone',
+			title: '品牌',
+			dataIndex: 'brand'
+		},
+		{
+			title: '管理账号',
+			dataIndex: 'account'
+		},
+		{
+			title: '地址',
+			key: 'address',
+			render(text, record, index) {
+				return `${record.province}${record.city}${record.district}${record.address}`
+			}
+		},
+		{
+			title: '联系人',
+			dataIndex: 'contact'
+		},
+		{
+			title: '联系电话',
 			dataIndex: 'phone'
 		},
 		{
-			title: 'gender',
-			dataIndex: 'gender'
+			title: '店铺状态',
+			dataIndex: 'status.name'
+		},
+		{
+			title: '启用状态',
+			dataIndex: 'enabled',
+			render(text, record, index) {
+				return text ? '启用' : '停用'
+			}
+		},
+		{
+			title: '仓库',
+			dataIndex: 'wareHouseList[0].name'
+		},
+		{
+			title: '签约时间',
+			dataIndex: 'joinedTime'
+		},
+		{
+			title: '操作',
+			key: 'operation',
+			render(text, record, index) {
+				return <a>查看</a>
+			}
 		}
 	]
 	return <Table columns={columns} rowKey='id' {...tableProps} />

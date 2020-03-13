@@ -64,10 +64,11 @@ export const GlobalMenuStyle = createGlobalStyle`
 
 ::-webkit-scrollbar {
 	width: 2px;
+	height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color:  ${props => (props.dark ? '#001529' : '#ffffff')};
+	background-color:  ${props => (props.dark ? '#001529' : '#ffffff')};
 }
 
 ::-webkit-scrollbar-thumb {
