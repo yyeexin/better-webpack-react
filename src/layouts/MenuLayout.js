@@ -85,6 +85,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	}, [location.pathname, flatedMenus])
 
 	const breadCrumbArray = useMemo(() => {
+		window.document.title = (currentLocation && currentLocation.menuName) || '古茗电商'
 		const breadArray = []
 		currentLocation && getBreadCrumbArray(currentLocation, breadArray)
 		return breadArray
