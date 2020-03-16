@@ -40,13 +40,13 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 							{menuIcon && <Icon type={menuIcon} />}
 							<span>{menuName}</span>
 						</>
-					}
-					children={generateMenus(children)}
-				/>
+					}>
+					{generateMenus(children)}
+				</Menu.SubMenu>
 			) : (
-				<Menu.Item key={menuCode} title={menuName}>
+				<Menu.Item key={menuCode}>
 					<Link to={menuUrl || '#'}>
-						{menuIcon && <Icon type={menuIcon} />}
+						{menuIcon && <Icon type={menuIcon} style={{ marginRight: 10 }} />}
 						<span>{menuName}</span>
 					</Link>
 				</Menu.Item>
