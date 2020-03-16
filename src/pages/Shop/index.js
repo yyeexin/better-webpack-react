@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Button, Col, Form, Input, Row, Table, Select, Card, Tag, Checkbox } from 'antd'
+import { Form, Input, Button, Checkbox, Row, Col, Table, Select, Card, Tag } from 'antd'
 import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
 import { hot } from 'react-hot-loader/root'
 import { useFormTable } from '@umijs/hooks'
 const { Option } = Select
+
 const Shop = props => {
 	const getTableData = async ({ current, pageSize }, formData) => {
 		const data = await props.dispatch({
@@ -93,7 +94,11 @@ const Shop = props => {
 			align: 'center',
 			width: 100,
 			render(text, record, index) {
-				return (text || []).map(item => <Tag color='#f50'>{item.name}</Tag>)
+				return (text || []).map(item => (
+					<Tag key={item.id} color='#f50'>
+						{item.name}
+					</Tag>
+				))
 			}
 		},
 		{
@@ -139,16 +144,36 @@ const Shop = props => {
 			<Form
 				layout='inline'
 				form={form}
-				{...layout}
 				name='basic'
-				initialValues={{}}
+				initialValues={{
+					username: '张三',
+					password: '123'
+				}}
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}>
-				<Form.Item name='username'>
-					<Input />
+				<Form.Item
+					name='username'
+					label='Username'
+					rules={[
+						{
+							required: true,
+							message: 'Please input your name'
+						}
+					]}
+					{...layout}>
+					<Input style={{ width: '200px' }} />
 				</Form.Item>
-				<Form.Item name='password'>
-					<Input />
+				<Form.Item
+					name='password'
+					label='Password'
+					rules={[
+						{
+							required: true,
+							message: 'Please input your nickname'
+						}
+					]}
+					{...layout}>
+					<Input style={{ width: '200px' }} />
 				</Form.Item>
 				<Form.Item>
 					<Button type='primary' htmlType='submit'>

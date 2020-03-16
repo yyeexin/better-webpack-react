@@ -6,7 +6,6 @@ import { connect } from 'dva'
 import { Link } from 'dva/router'
 import logo from 'assets/image/logo.jpg'
 const { Header, Content, Footer, Sider } = Layout
-
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
 
 const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
@@ -20,7 +19,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 		const changeMenuCollapsed = () => {
 			if (timer) clearTimeout(timer)
 			timer = setTimeout(() => {
-				setCollapsed(() => document.body.clientWidth < 769)
+				setCollapsed(() => document.body.clientWidth < 993)
 			}, 300)
 		}
 		window.addEventListener('resize', changeMenuCollapsed)
@@ -30,32 +29,28 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 		}
 	}, [])
 
-	const generateMenus = (menus, collapsed) => {
+	const generateMenus = menus => {
 		return menus.map(item => {
 			const { menuIcon, menuName, menuUrl, menuCode, children = [] } = item
-			if (children && children.length > 0) {
-				return (
-					<Menu.SubMenu
-						key={menuCode}
-						title={
-							<>
-								{menuIcon && <Icon type={menuIcon} />}
-								<span>{menuName}</span>
-							</>
-						}
-						children={generateMenus(children, collapsed)}
-					/>
-				)
-			} else {
-				return (
-					<Menu.Item key={menuCode} title={menuName}>
-						<Link to={menuUrl || '#'}>
+			return children && children.length > 0 ? (
+				<Menu.SubMenu
+					key={menuCode}
+					title={
+						<>
 							{menuIcon && <Icon type={menuIcon} />}
 							<span>{menuName}</span>
-						</Link>
-					</Menu.Item>
-				)
-			}
+						</>
+					}
+					children={generateMenus(children)}
+				/>
+			) : (
+				<Menu.Item key={menuCode} title={menuName}>
+					<Link to={menuUrl || '#'}>
+						{menuIcon && <Icon type={menuIcon} />}
+						<span>{menuName}</span>
+					</Link>
+				</Menu.Item>
+			)
 		})
 	}
 
@@ -69,31 +64,31 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 		}, [])
 	}
 
+	function getBreadCrumbArray(currentLocation, breadArray) {
+		breadArray.unshift(currentLocation)
+		if (currentLocation.menuPcode && currentLocation.menuPcode !== '001') {
+			const parentMenu = flatedMenus.find(item => item.menuCode === currentLocation.menuPcode)
+			getBreadCrumbArray(parentMenu, breadArray)
+		}
+	}
+
+	const menusItems = useMemo(() => {
+		return generateMenus(menus)
+	}, [menus])
+
 	const flatedMenus = useMemo(() => {
 		return flatMenus(menus)
 	}, [menus])
 
-	const generateBreads = currentPath => {
-		function getBreadCrumbArray(menu, breadArray) {
-			breadArray.unshift(menu)
-			if (menu.menuPcode && menu.menuPcode !== '001') {
-				const parentMenu = flatedMenus.find(item => item.menuCode === menu.menuPcode)
-				getBreadCrumbArray(parentMenu, breadArray)
-			}
-		}
-		const current = flatedMenus.find(item => currentPath == item.menuUrl)
-		const breadArray = []
-		current && getBreadCrumbArray(current, breadArray)
-		return breadArray
-	}
+	const currentLocation = useMemo(() => {
+		return flatedMenus.find(item => location.pathname == item.menuUrl)
+	}, [location.pathname, flatedMenus])
 
 	const breadCrumbArray = useMemo(() => {
-		return generateBreads(location.pathname)
-	}, [location.pathname, menus])
-
-	const menusItems = useMemo(() => {
-		return generateMenus(menus, collapsed)
-	}, [menus])
+		const breadArray = []
+		currentLocation && getBreadCrumbArray(currentLocation, breadArray)
+		return breadArray
+	}, [currentLocation])
 
 	return (
 		<Layout style={{ height: '100vh' }}>
@@ -105,7 +100,7 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 				</MenuLogoDiv>
 				<Menu
 					theme={checked ? 'dark' : 'light'}
-					defaultSelectedKeys={['001007']}
+					selectedKeys={[currentLocation && currentLocation.menuCode]}
 					mode={collapsed ? 'vertical' : 'inline'}>
 					{menusItems}
 				</Menu>

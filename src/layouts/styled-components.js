@@ -14,8 +14,10 @@ export const MenuLogoDiv = styled.div`
 		width: 40px;
 	}
 	span {
-		margin-left: 10px;
 		color: ${props => (props.dark ? '#ffffff' : '#000000')};
+		margin-left: 10px;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 `
 
@@ -30,14 +32,44 @@ export const ThemeSwitchDiv = styled.div`
 	padding: 0 16px 0 24px;
 	background-color: ${props => (props.dark ? '#002140' : '#ffffff')};
 	color: ${props => (props.dark ? '#ffffff' : '#000000')};
+	span {
+		white-space: nowrap;
+		overflow: hidden;
+	}
 `
 
 export const GlobalMenuStyle = createGlobalStyle`
-.ant-layout-sider-children {
-	overflow-y: scroll;
-	overflow-x: hidden;
-	.ant-menu-root {
-		padding-bottom: ${props => (props.collapsed ? '0' : '48px')};
+.ant-layout-sider {
+	background-color: ${props => (props.dark ? '#001529' : '#ffffff')};
+	.ant-layout-sider-children {
+		overflow-y: scroll;
+		overflow-x: hidden;
+	
+		/*定义滚动条高宽及背景
+		 高宽分别对应横竖滚动条的尺寸*/
+		::-webkit-scrollbar {
+			width: 2px;
+			height: 5px;
+		}
+		
+		/*定义滚动条轨道
+		 内阴影+圆角*/
+		::-webkit-scrollbar-track {
+			background-color: ${props => (props.dark ? '#001529' : '#ffffff')};
+			border-radius: 5px;
+		}
+		
+		/*定义滑块
+		 内阴影+圆角*/
+		::-webkit-scrollbar-thumb {
+			background-color: ${props => (props.dark ? '#1890ff' : '#dddddd')};
+			border-radius: 5px;
+		}
+	
+		.ant-menu-root {
+			padding-bottom: ${props => (props.collapsed ? '0' : '48px')};
+		}
+	
 	}
 }
 
@@ -62,16 +94,4 @@ export const GlobalMenuStyle = createGlobalStyle`
 	padding: 0 24px;
 }
 
-::-webkit-scrollbar {
-	width: 2px;
-	height: 10px;
-}
-
-::-webkit-scrollbar-track {
-	background-color:  ${props => (props.dark ? '#001529' : '#ffffff')};
-}
-
-::-webkit-scrollbar-thumb {
-	background-color:  ${props => (props.dark ? '#1890ff' : '#dddddd')};
-}
 `

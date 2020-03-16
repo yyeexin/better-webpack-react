@@ -3,7 +3,6 @@ const path = require('path')
 const webpack = require('webpack')
 const { smart } = require('webpack-merge')
 const Happypack = require('happypack')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length })
 const base = require('./webpack.config.base.js')
@@ -52,17 +51,16 @@ module.exports = smart(base, {
 			{
 				test: /\.css$/,
 				include: /node_modules/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader']
+				use: ['style-loader', 'css-loader']
 			},
 			{
 				test: /\.(less|css)$/,
 				exclude: /node_modules/,
-				use: 'happypack/loader?id=css'
+				use: 'happypack/loader?id=less'
 			}
 		]
 	},
 	plugins: [
-		new MiniCssExtractPlugin({ filename: 'main.css' }),
 		new FriendlyErrorsWebpackPlugin({
 			compilationSuccessInfo: {
 				messages: [`App is running at: http://${IP}:${port}/`]
@@ -76,7 +74,7 @@ module.exports = smart(base, {
 			loaders: [{ loader: 'babel-loader', options: { cacheDirectory: true } }]
 		}),
 		new Happypack({
-			id: 'css',
+			id: 'less',
 			threadPool: happyThreadPool,
 			loaders: [
 				'style-loader',
