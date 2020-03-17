@@ -14,11 +14,11 @@ export default {
 	effects: {
 		*login({ payload }, { call, put, select }) {
 			const data = yield call(request, { url: userLogin, method: 'post', payload })
-			const { message } = data
-			if (message === 'success') {
+			const { message, status } = data
+			if (message === 'success' || status === 200) {
 				console.log(data)
-				window.location.href = '/#/home'
-				// yield put(routerRedux.push('/home'))
+				// window.location.href = '/#/home'
+				yield put(routerRedux.push('/home'))
 			}
 		},
 		*getMenus({ payload }, { call, put, select }) {
