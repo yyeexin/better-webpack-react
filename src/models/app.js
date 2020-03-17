@@ -16,7 +16,9 @@ export default {
 			const data = yield call(request, { url: userLogin, method: 'post', payload })
 			const { message } = data
 			if (message === 'success') {
-				yield put(routerRedux.push('/home'))
+				console.log(data)
+				window.location.href = '/#/home'
+				// yield put(routerRedux.push('/home'))
 			}
 		},
 		*getMenus({ payload }, { call, put, select }) {
