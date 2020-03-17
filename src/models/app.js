@@ -1,4 +1,4 @@
-import { routerRedux } from 'dva/router'
+import { routerRedux } from 'dva'
 import request from 'utils/request'
 import urls from 'utils/urls'
 const { BaoHuo_Login_URLS, BaoHuo_Menu_URLS } = urls
@@ -16,8 +16,6 @@ export default {
 			const data = yield call(request, { url: userLogin, method: 'post', payload })
 			const { message, status } = data
 			if (message === 'success' || status === 200) {
-				console.log(data)
-				// window.location.href = '/#/home'
 				yield put(routerRedux.push('/home'))
 			}
 		},

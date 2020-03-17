@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo, memo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
+import { connect, router as dvaRouter } from 'dva'
 import { Icon } from '@ant-design/compatible'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
-import { connect } from 'dva'
-import { Link } from 'dva/router'
-import logo from 'assets/image/logo.jpg'
-const { Header, Content, Footer, Sider } = Layout
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
+import logo from 'assets/image/logo.jpg'
+const { Link } = dvaRouter
+const { Header, Content, Footer, Sider } = Layout
 
 const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	const { menus } = app

@@ -1,4 +1,3 @@
-import { routerRedux } from 'dva/router'
 import request from 'utils/request'
 import urls from 'utils/urls'
 const { BaoHuo_Shop_URLS } = urls
