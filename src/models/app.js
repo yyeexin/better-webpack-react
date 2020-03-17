@@ -31,6 +31,18 @@ export default {
 					}
 				})
 			}
+		},
+		*goShops({ payload }, { call, put, select }) {
+			yield put(routerRedux.push('/shop/shops'))
+		},
+		*goShops2({ payload }, { call, put, select }) {
+			window.location.href = '/#/shop/shops'
+		},
+		*goHome({ payload }, { call, put, select }) {
+			yield put(routerRedux.push('/home'))
+		},
+		*goHome2({ payload }, { call, put, select }) {
+			window.location.href = '/#/home'
 		}
 	},
 	reducers: {
