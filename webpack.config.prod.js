@@ -1,5 +1,4 @@
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin') //压缩css样式
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') //抽离css样式为单独文件
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清空dist目录
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //压缩打包后的代码
@@ -43,7 +42,6 @@ module.exports = smart(base, {
 			chunkFilename: 'css/[name].[contenthash:6].css'
 		}),
 		new CleanWebpackPlugin(),
-		new BundleAnalyzerPlugin(),
 		new Happypack({
 			id: 'js',
 			threadPool: happyThreadPool,
