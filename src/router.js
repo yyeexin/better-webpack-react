@@ -1,6 +1,6 @@
 import React from 'react'
 import { dynamic, routerRedux, router as reactRouter } from 'dva'
-const { Route, Switch } = reactRouter
+const { Route, Switch, HashRouter } = reactRouter
 const { ConnectedRouter } = routerRedux
 import Layout from './layouts'
 
@@ -30,14 +30,16 @@ const router = ({ history, app }) => {
 
 	return (
 		<ConnectedRouter history={history}>
-			<Layout>
-				<Switch>
-					{routes.map(({ path, ...rest }, index) => {
-						return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
-					})}
-					<Route component={dynamic({ app, component: () => import('./pages/404') })} />
-				</Switch>
-			</Layout>
+			<HashRouter>
+				<Layout>
+					<Switch>
+						{routes.map(({ path, ...rest }, index) => {
+							return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
+						})}
+						<Route component={dynamic({ app, component: () => import('./pages/404') })} />
+					</Switch>
+				</Layout>
+			</HashRouter>
 		</ConnectedRouter>
 	)
 }
