@@ -5,6 +5,7 @@ import { hot } from 'react-hot-loader/root'
 import { CardTitle } from './styled-components'
 
 const Home = () => {
+	console.log('首页')
 	return (
 		<>
 			<Row gutter={10}>

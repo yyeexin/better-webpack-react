@@ -49,7 +49,10 @@ const request = extend({
 request.interceptors.response.use(async response => {
 	const data = await response.clone().json()
 	const { status } = data
-	if (status === 403) return (location.href = '/#/login')
+	if (status === 403) {
+		console.log('权限不足,返回首页')
+		return (location.href = '/#/login')
+	}
 	return response
 })
 
