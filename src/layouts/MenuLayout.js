@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, memo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
 import { connect, router as reactRouter } from 'dva'
 import { Icon } from '@ant-design/compatible'
@@ -8,7 +8,8 @@ import logo from 'assets/image/logo.jpg'
 const { Link } = reactRouter
 const { Header, Content, Footer, Sider } = Layout
 
-const MenuLayout = memo(({ location, children, dispatch, app }) => {
+const MenuLayout = ({ location, children, dispatch, app }) => {
+	console.log('渲染layout')
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(false)
 	const [checked, setChecked] = useState(true)
@@ -73,10 +74,12 @@ const MenuLayout = memo(({ location, children, dispatch, app }) => {
 	}
 
 	const menusItems = useMemo(() => {
+		console.log('生成菜单')
 		return generateMenus(menus)
 	}, [menus])
 
 	const flatedMenus = useMemo(() => {
+		console.log('铺平菜单')
 		return flatMenus(menus)
 	}, [menus])
 
@@ -85,6 +88,7 @@ const MenuLayout = memo(({ location, children, dispatch, app }) => {
 	}, [location.pathname, flatedMenus])
 
 	const breadCrumbArray = useMemo(() => {
+		console.log('生成面包屑')
 		window.document.title = (currentLocation && currentLocation.menuName) || '古茗电商'
 		const breadArray = []
 		currentLocation && getBreadCrumbArray(currentLocation, breadArray)
@@ -140,6 +144,6 @@ const MenuLayout = memo(({ location, children, dispatch, app }) => {
 			</Layout>
 		</Layout>
 	)
-})
+}
 
 export default connect(({ dispatch, app }) => ({ dispatch, app }))(MenuLayout)
