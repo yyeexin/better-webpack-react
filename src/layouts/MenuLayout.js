@@ -1,14 +1,14 @@
 import { useState, useEffect, useMemo, memo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
-import { connect, router as dvaRouter } from 'dva'
+import { connect, router as reactRouter } from 'dva'
 import { Icon } from '@ant-design/compatible'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
 import logo from 'assets/image/logo.jpg'
-const { Link } = dvaRouter
+const { Link } = reactRouter
 const { Header, Content, Footer, Sider } = Layout
 
-const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
+const MenuLayout = memo(({ location, children, dispatch, app }) => {
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(false)
 	const [checked, setChecked] = useState(true)
@@ -142,4 +142,4 @@ const MenuLayout = memo(({ router: { location }, children, dispatch, app }) => {
 	)
 })
 
-export default connect(({ dispatch, app, router }) => ({ dispatch, app, router }))(MenuLayout)
+export default connect(({ dispatch, app }) => ({ dispatch, app }))(MenuLayout)

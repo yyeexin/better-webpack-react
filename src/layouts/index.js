@@ -4,7 +4,7 @@ import MenuLayout from './MenuLayout'
 
 const Layout = ({ location, children }) => {
 	const { pathname } = location
-	return pathname === '/login' ? children : <MenuLayout children={children} />
+	return pathname === '/login' ? children : <MenuLayout children={children} location={location} />
 }
 
 export default withRouter(Layout)
