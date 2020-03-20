@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react'
-import { dynamic, routerRedux, router as dvarouter } from 'dva'
-const { Route, Switch, HashRouter, Redirect } = dvarouter
+import React from 'react'
+import { dynamic, routerRedux, router as reactRouter } from 'dva'
+const { Route, Switch } = reactRouter
 const { ConnectedRouter } = routerRedux
 import Layout from './layouts'
 
@@ -34,19 +34,14 @@ const router = ({ history, app }) => {
 
 	return (
 		<ConnectedRouter history={history}>
-			<Suspense fallback={<div>Loading...</div>}>
-				<HashRouter>
-					<Layout routeConfig={routes}>
-						<Switch>
-							{routes.map(({ path, ...rest }, index) => {
-								return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
-							})}
-							<Route component={dynamic({ app, component: () => import('./pages/404') })} />
-							{/* <Redirect from='/*' to='/notFound' /> */}
-						</Switch>
-					</Layout>
-				</HashRouter>
-			</Suspense>
+			<Layout>
+				<Switch>
+					{routes.map(({ path, ...rest }, index) => {
+						return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
+					})}
+					<Route component={dynamic({ app, component: () => import('./pages/404') })} />
+				</Switch>
+			</Layout>
 		</ConnectedRouter>
 	)
 }
