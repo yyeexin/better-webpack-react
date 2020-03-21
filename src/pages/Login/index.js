@@ -36,6 +36,22 @@ const Login = props => {
 
 	return (
 		<StyledDiv>
+			<button
+				onClick={() =>
+					props.dispatch({
+						type: 'app/goShops'
+					})
+				}>
+				/dispatch shop3
+			</button>
+			<button
+				onClick={() =>
+					props.dispatch({
+						type: 'app/goShops2'
+					})
+				}>
+				/dispatch shop4
+			</button>
 			<FormContent>
 				<div
 					style={{
