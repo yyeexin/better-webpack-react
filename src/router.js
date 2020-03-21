@@ -1,6 +1,6 @@
 import React from 'react'
 import { dynamic, routerRedux, router as reactRouter } from 'dva'
-const { Route, Switch } = reactRouter
+const { Route, Switch, Redirect } = reactRouter
 const { ConnectedRouter } = routerRedux
 import Layout from './layouts'
 
@@ -32,6 +32,7 @@ const router = ({ history, app }) => {
 		<ConnectedRouter history={history}>
 			<Layout>
 				<Switch>
+					<Route exact path='/' render={() => <Redirect to='/home' />} />
 					{routes.map(({ path, ...rest }) => (
 						<Route exact key={path} path={path} component={dynamic({ app, ...rest })} />
 					))}
