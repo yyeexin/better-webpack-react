@@ -30,16 +30,16 @@ const router = ({ history, app }) => {
 
 	return (
 		<ConnectedRouter history={history}>
-			<HashRouter>
-				<Layout>
-					<Switch>
-						{routes.map(({ path, ...rest }, index) => {
-							return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
-						})}
-						<Route component={dynamic({ app, component: () => import('./pages/404') })} />
-					</Switch>
-				</Layout>
-			</HashRouter>
+			{/* <HashRouter> */}
+			{/* <Layout> */}
+			<Switch>
+				{routes.map(({ path, ...rest }, index) => {
+					return <Route key={index} exact path={path} component={dynamic({ app, ...rest })} />
+				})}
+				<Route component={dynamic({ app, component: () => import('./pages/404') })} />
+			</Switch>
+			{/* </Layout> */}
+			{/* </HashRouter> */}
 		</ConnectedRouter>
 	)
 }
