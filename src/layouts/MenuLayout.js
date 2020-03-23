@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
-import { router as reactRouter } from 'dva'
+import { connect, router as reactRouter } from 'dva'
 import { Icon } from '@ant-design/compatible'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
@@ -146,4 +146,4 @@ const MenuLayout = ({ location, children, dispatch, app }) => {
 	)
 }
 
-export default MenuLayout
+export default connect(({ app, dispatch }) => ({ app, dispatch }))(MenuLayout)
