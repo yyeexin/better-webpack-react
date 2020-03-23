@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Row, Col, Card } from 'antd'
+import { hot } from 'react-hot-loader/root'
 import { CardTitle } from './styled-components'
 
 const Home = () => {
@@ -36,4 +37,4 @@ const Home = () => {
 	)
 }
 
-export default Home
+export default hot(Home)

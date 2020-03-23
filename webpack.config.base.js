@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 module.exports = {
-	entry: './src/index.js',
+	entry: ['react-hot-loader/patch', './src/index.js'],
 	output: {
 		filename: '[name].[hash:6].js', //打包后的文件名
 		path: path.resolve(__dirname, 'dist'), //路径必须是一个决定路径
@@ -14,6 +14,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.css', '.json'], //省略文件后缀名
 		alias: {
+			'react-dom': '@hot-loader/react-dom',
 			'@': path.resolve(__dirname, './src'),
 			assets: path.resolve(__dirname, './src/assets'),
 			pages: path.resolve(__dirname, './src/pages'),

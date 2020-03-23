@@ -1,10 +1,12 @@
-import { router as reactRouter } from 'dva'
+import { connect, router as reactRouter } from 'dva'
 const { withRouter } = reactRouter
 import MenuLayout from './MenuLayout'
 
-const Layout = ({ location, children }) => {
+const Layout = props => {
+	const { location, children } = props
 	const { pathname } = location
-	return pathname === '/login' ? children : <MenuLayout children={children} location={location} />
+	console.log(pathname, props, pathname === '/login')
+	return pathname === '/login' ? children : <MenuLayout {...props} />
 }
 
-export default withRouter(Layout)
+export default connect(({ app, dispatch }) => ({ app, dispatch }))(withRouter(Layout))
