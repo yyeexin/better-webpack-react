@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "webpack-dev-server --config webpack.config.dev.js",
 		"build": "webpack --config webpack.config.prod.js",
-		"push": "git add . && git commit -m \"commit\" && git pull && git push"
+		"push": "git add . && git commit -m \"commit\" && git pull && git push",
+		"upgrade": "yarn upgrade-interactive --ignore-engines"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.7",
@@ -50,7 +51,9 @@
 		"dva": "^2.6.0-beta.20",
 		"dva-loading": "^3.0.20",
 		"react": "^16.13.0",
+		"react-dom": "^16.13.1",
 		"react-hot-loader": "^4.12.18",
+		"react-router-dom": "^5.1.2",
 		"styled-components": "^5.0.0-rc.3",
 		"umi-request": "^1.2.19"
 	}

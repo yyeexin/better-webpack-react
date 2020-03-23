@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'dva'
 import { Form, Input, Button, Checkbox, Row, Col, Table, Select, Card, Tag } from 'antd'
 import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
-import { hot } from 'react-hot-loader/root'
 import { useFormTable } from '@umijs/hooks'
 const { Option } = Select
 
@@ -186,4 +185,4 @@ const Shop = props => {
 	)
 }
 
-export default connect(({ dispatch, shop }) => ({ dispatch, shop }))(hot(Shop))
+export default connect(({ dispatch, shop }) => ({ dispatch, shop }))(Shop)
