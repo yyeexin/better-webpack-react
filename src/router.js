@@ -20,7 +20,15 @@ const router = ({ history, app }) => {
 		},
 
 		{
-			path: '/hooks',
+			path: '/hooks1',
+			component: () => import('./pages/Hooks')
+		},
+		{
+			path: '/hooks2',
+			component: () => import('./pages/Hooks')
+		},
+		{
+			path: '/hooks3',
 			component: () => import('./pages/Hooks')
 		},
 		{
