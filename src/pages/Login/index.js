@@ -25,16 +25,17 @@ const FormContent = styled.div`
 
 const Login = props => {
 	const onFinish = ({ account, password }) => {
-		props.dispatch({
-			type: 'app/login',
-			payload: {
-				account,
-				password
-			}
-		})
-		// .then(res => {
-		// 	if (res) props.history.push('/')
-		// })
+		props
+			.dispatch({
+				type: 'app/login',
+				payload: {
+					account,
+					password
+				}
+			})
+			.then(res => {
+				if (res) props.history.push('/')
+			})
 	}
 
 	return (

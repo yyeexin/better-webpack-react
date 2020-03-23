@@ -38,26 +38,15 @@ const router = ({ history, app }) => {
 	]
 	return (
 		<ConnectedRouter history={history}>
-			<Switch>
-				<Route exact path='/' render={() => <Redirect to='/home' />} />
-				{routes.map(({ path, ...rest }) => (
-					<Route
-						exact
-						key={path}
-						path={path}
-						render={props => {
-							console.log('route生成')
-							const Component = dynamic({ app, ...rest })
-							return (
-								<Layout {...props}>
-									<Component {...props} />
-								</Layout>
-							)
-						}}
-					/>
-				))}
-				<Route component={dynamic({ app, component: () => import('./pages/404') })} />
-			</Switch>
+			<Layout>
+				<Switch>
+					<Route exact path='/' render={() => <Redirect to='/home' />} />
+					{routes.map(({ path, ...rest }) => (
+						<Route exact key={path} path={path} component={dynamic({ app, ...rest })} />
+					))}
+					<Route component={dynamic({ app, component: () => import('./pages/404') })} />
+				</Switch>
+			</Layout>
 		</ConnectedRouter>
 	)
 }

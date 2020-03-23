@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
-import { connect, router as reactRouter } from 'dva'
+import { router as reactRouter } from 'dva'
 import { Icon } from '@ant-design/compatible'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
@@ -8,25 +8,29 @@ import logo from 'assets/image/logo.jpg'
 const { Link } = reactRouter
 const { Header, Content, Footer, Sider } = Layout
 
+let timer
+
 const MenuLayout = ({ location, children, dispatch, app }) => {
 	console.log('渲染layout')
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(false)
 	const [checked, setChecked] = useState(true)
 
+	const changeMenuCollapsed = () => {
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(() => {
+			setCollapsed(() => document.body.clientWidth < 993)
+		}, 300)
+	}
+
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
-		let timer
-		const changeMenuCollapsed = () => {
-			if (timer) clearTimeout(timer)
-			timer = setTimeout(() => {
-				setCollapsed(() => document.body.clientWidth < 993)
-			}, 300)
-		}
 		window.addEventListener('resize', changeMenuCollapsed)
+		window.addEventListener('pageshow', changeMenuCollapsed)
 		return () => {
 			clearTimeout(timer)
 			window.removeEventListener('resize', changeMenuCollapsed)
+			window.removeEventListener('pageshow', changeMenuCollapsed)
 		}
 	}, [])
 
@@ -146,4 +150,4 @@ const MenuLayout = ({ location, children, dispatch, app }) => {
 	)
 }
 
-export default connect(({ app, dispatch }) => ({ app, dispatch }))(MenuLayout)
+export default MenuLayout
