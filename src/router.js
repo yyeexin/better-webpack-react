@@ -25,6 +25,10 @@ const router = ({ history, app }) => {
 		{
 			path: '/hooks',
 			component: () => import('./pages/Hooks')
+		},
+		{
+			path: '/test',
+			component: () => import('./pages/Test')
 		}
 	]
 	return (

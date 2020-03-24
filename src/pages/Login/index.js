@@ -24,18 +24,15 @@ const FormContent = styled.div`
 `
 
 const Login = props => {
-	const onFinish = ({ account, password }) => {
-		props
-			.dispatch({
-				type: 'app/login',
-				payload: {
-					account,
-					password
-				}
-			})
-			.then(res => {
-				if (res) props.history.push('/')
-			})
+	const onFinish = async ({ account, password }) => {
+		const res = await props.dispatch({
+			type: 'app/login',
+			payload: {
+				account,
+				password
+			}
+		})
+		if (res) props.history.push('/')
 	}
 
 	return (
@@ -52,7 +49,7 @@ const Login = props => {
 					<img src={login_logo} style={{ width: 40, marginRight: 8 }} />
 					<span>古茗电商</span>
 				</div>
-				<Form initialValues={{ remember: true }} onFinish={onFinish}>
+				<Form initialValues={{ account: '', password: '', remember: true }} onFinish={onFinish}>
 					<Form.Item name='account' rules={[{ required: true, message: '请输入用户名!' }]}>
 						<Input prefix={<UserOutlined />} placeholder='用户名' />
 					</Form.Item>
@@ -78,4 +75,4 @@ const Login = props => {
 	)
 }
 
-export default connect(({ dispatch, app }) => ({ dispatch, app }))(Login)
+export default connect(({ dispatch }) => ({ dispatch }))(Login)
