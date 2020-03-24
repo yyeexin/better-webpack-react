@@ -15,7 +15,10 @@ export default {
 		*login({ payload }, { call, put, select }) {
 			const data = yield call(request, { url: userLogin, method: 'post', payload })
 			const { message, status } = data
-			return message === 'success' || status === 200
+			if (message === 'success' || status === 200) {
+				yield put(routerRedux.push('/home'))
+			}
+			// return message === 'success' || status === 200
 		},
 		*getMenus({ payload }, { call, put, select }) {
 			const data = yield call(request, { method: 'get', url: menus })

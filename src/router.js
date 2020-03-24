@@ -7,40 +7,31 @@ import Layout from './layouts'
 const router = ({ history, app }) => {
 	const routes = [
 		{
-			path: '/shop/shops',
-			component: () => import('./pages/Shop')
+			path: '/login',
+			component: () => import('./pages/Login')
 		},
 		{
 			path: '/home',
 			component: () => import('./pages/Home')
 		},
 		{
+			path: '/shop/shops',
+			component: () => import('./pages/Shop')
+		},
+		{
 			path: '/user',
 			component: () => import('./pages/User')
 		},
-
 		{
-			path: '/hooks1',
+			path: '/hooks',
 			component: () => import('./pages/Hooks')
-		},
-		{
-			path: '/hooks2',
-			component: () => import('./pages/Hooks')
-		},
-		{
-			path: '/hooks3',
-			component: () => import('./pages/Hooks')
-		},
-		{
-			path: '/login',
-			component: () => import('./pages/Login')
 		}
 	]
 	return (
 		<ConnectedRouter history={history}>
 			<Layout>
 				<Switch>
-					<Route exact path='/' render={() => <Redirect to='/home' />} />
+					<Redirect exact from='/' to='/home' />
 					{routes.map(({ path, ...rest }) => (
 						<Route exact key={path} path={path} component={dynamic({ app, ...rest })} />
 					))}

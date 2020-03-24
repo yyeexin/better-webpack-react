@@ -9,4 +9,4 @@ const Layout = props => {
 	return pathname === '/login' ? children : <MenuLayout {...props} />
 }
 
-export default connect(({ app, dispatch }) => ({ app, dispatch }))(withRouter(Layout))
+export default withRouter(connect(({ app, dispatch }) => ({ app, dispatch }))(Layout))
