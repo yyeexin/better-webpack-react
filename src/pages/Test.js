@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useModal, useDebounce } from '@/hooks'
+import React, { useState, useRef } from 'react'
+import { useModal, useDebounce, useScroll } from '@/hooks'
 const App = () => {
 	const { show, hide, RenderModal } = useModal()
 	const [a, setA] = useState(0)
@@ -12,12 +12,15 @@ const App = () => {
 		[a]
 	)
 
+	const scrollRef = useRef(null)
+	const [x, y] = useScroll(scrollRef)
+
 	const changeIpt = e => {
 		setA(e.target.value)
 	}
 
 	return (
-		<div>
+		<div style={{ height: '500vh' }}>
 			<input type='text' onChange={changeIpt} />
 			{b} {a}
 			<div>
@@ -29,6 +32,12 @@ const App = () => {
 				</RenderModal>
 			</div>
 			<div id='modal-root' />
+			<div ref={scrollRef}>
+				<div className='innerBox'></div>
+			</div>
+			<div>
+				{x}, {y}
+			</div>
 		</div>
 	)
 }
