@@ -13,13 +13,13 @@ let timer
 const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	console.log('渲染layout')
 	const { menus } = app
-	const [collapsed, setCollapsed] = useState(false)
+	const [collapsed, setCollapsed] = useState(!!window.sessionStorage.getItem('collapsed'))
 	const [checked, setChecked] = useState(true)
 
 	const changeMenuCollapsed = () => {
 		if (timer) clearTimeout(timer)
 		timer = setTimeout(() => {
-			setCollapsed(() => document.body.clientWidth < 993)
+			setCollapsed(() => !!window.sessionStorage.getItem('collapsed') || document.body.clientWidth < 993)
 		}, 300)
 	}
 
@@ -102,7 +102,12 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	return (
 		<Layout style={{ height: '100vh' }}>
 			<GlobalMenuStyle dark={checked} collapsed={collapsed} />
-			<Sider collapsed={collapsed} onCollapse={() => setCollapsed(collapsed => !collapsed)}>
+			<Sider
+				collapsed={collapsed}
+				onCollapse={() => {
+					setCollapsed(collapsed => !collapsed)
+					window.sessionStorage.setItem('collapsed', !collapsed)
+				}}>
 				<MenuLogoDiv dark={checked}>
 					<img src={logo} />
 					{!collapsed && <span>古茗电商</span>}
