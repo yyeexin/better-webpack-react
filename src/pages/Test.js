@@ -1,11 +1,25 @@
-import React from 'react'
-
-import { useModal } from '@/hooks'
-
-const App = React.memo(() => {
+import React, { useState } from 'react'
+import { useModal, useDebounce } from '@/hooks'
+const App = () => {
 	const { show, hide, RenderModal } = useModal()
+	const [a, setA] = useState(0)
+	const [b, setB] = useState(0)
+	const [cancel] = useDebounce(
+		() => {
+			setB(a)
+		},
+		2000,
+		[a]
+	)
+
+	const changeIpt = e => {
+		setA(e.target.value)
+	}
+
 	return (
 		<div>
+			<input type='text' onChange={changeIpt} />
+			{b} {a}
 			<div>
 				<p>some content...</p>
 				<button onClick={show}>打开</button>
@@ -17,6 +31,6 @@ const App = React.memo(() => {
 			<div id='modal-root' />
 		</div>
 	)
-})
+}
 
 export default App

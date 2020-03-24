@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import Modal from '@/components/Modal'
+import React, { useState, memo, Fragment } from 'react'
+import ReactDOM from 'react-dom'
 
 export const useModal = () => {
 	const [isVisible, setIsVisible] = useState(false)
@@ -7,7 +7,7 @@ export const useModal = () => {
 	const hide = () => setIsVisible(false)
 
 	const RenderModal = ({ children }) => (
-		<React.Fragment>{isVisible && <Modal closeModal={hide}>{children}</Modal>}</React.Fragment>
+		<Fragment>{isVisible && <Modal closeModal={hide}>{children}</Modal>}</Fragment>
 	)
 
 	return {
@@ -16,3 +16,15 @@ export const useModal = () => {
 		RenderModal
 	}
 }
+
+const Modal = memo(({ children, closeModal }) => {
+	const domEl = document.getElementById('modal-root')
+	if (!domEl) return null
+	return ReactDOM.createPortal(
+		<div>
+			<button onClick={closeModal}>Close</button>
+			{children}
+		</div>,
+		domEl
+	)
+})
