@@ -1,9 +1,9 @@
 import { connect, router as reactRouter } from 'dva'
-const { withRouter } = reactRouter
 import MenuLayout from './MenuLayout'
 
 const Layout = props => {
-	const { location, children } = props
+	const { router, children } = props
+	const { location } = router
 	const { pathname } = location
 	console.log(pathname, pathname === '/login', props)
 	if (pathname === '/login') {
@@ -12,4 +12,4 @@ const Layout = props => {
 	return <MenuLayout {...props} />
 }
 
-export default withRouter(connect(({ app, dispatch }) => ({ app, dispatch }))(Layout))
+export default connect(({ app, dispatch, router }) => ({ app, dispatch, router }))(Layout)

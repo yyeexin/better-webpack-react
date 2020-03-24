@@ -10,7 +10,7 @@ const { Header, Content, Footer, Sider } = Layout
 
 let timer
 
-const MenuLayout = ({ location, children, dispatch, app }) => {
+const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	console.log('渲染layout')
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(false)
