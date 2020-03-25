@@ -19,18 +19,18 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	const changeMenuCollapsed = () => {
 		if (timer) clearTimeout(timer)
 		timer = setTimeout(() => {
-			setCollapsed(() => !!window.sessionStorage.getItem('collapsed') || document.body.clientWidth < 993)
+			const collapsed = !!window.sessionStorage.getItem('collapsed') || document.body.clientWidth < 993
+			setCollapsed(collapsed)
+			window.sessionStorage.setItem('collapsed', collapsed)
 		}, 300)
 	}
 
 	useEffect(() => {
 		dispatch({ type: `app/getMenus` })
 		window.addEventListener('resize', changeMenuCollapsed)
-		window.addEventListener('pageshow', changeMenuCollapsed)
 		return () => {
 			clearTimeout(timer)
 			window.removeEventListener('resize', changeMenuCollapsed)
-			window.removeEventListener('pageshow', changeMenuCollapsed)
 		}
 	}, [])
 
@@ -102,12 +102,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	return (
 		<Layout style={{ height: '100vh' }}>
 			<GlobalMenuStyle dark={checked} collapsed={collapsed} />
-			<Sider
-				collapsed={collapsed}
-				onCollapse={() => {
-					setCollapsed(collapsed => !collapsed)
-					window.sessionStorage.setItem('collapsed', !collapsed)
-				}}>
+			<Sider collapsed={collapsed}>
 				<MenuLogoDiv dark={checked}>
 					<img src={logo} />
 					{!collapsed && <span>古茗电商</span>}
@@ -135,7 +130,10 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 				<Header style={{ backgroundColor: '#fff', height: 40, display: 'flex', alignItems: 'center' }}>
 					{React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
 						className: 'trigger',
-						onClick: () => setCollapsed(collapsed => !collapsed)
+						onClick: () => {
+							window.sessionStorage.setItem('collapsed', !collapsed)
+							setCollapsed(collapsed => !collapsed)
+						}
 					})}
 				</Header>
 				<Breadcrumb>
