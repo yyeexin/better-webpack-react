@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import BraftEditor from 'braft-editor'
 import Table from 'braft-extensions/dist/table'
 import MaxLength from 'braft-extensions/dist/max-length'
+import request from 'utils/request'
+import urls from 'utils/urls'
+const { BaoHuo_ActivityAddOrEdit_URLS } = urls
 
 BraftEditor.use(
 	Table({
@@ -15,7 +18,7 @@ BraftEditor.use(
 
 BraftEditor.use(MaxLength())
 
-const Editor = ({ value = null, onSave, onChange, maxLength = null, onReachMaxLength }) => {
+const Editor = ({ value = null, onChange, ...editorProps }) => {
 	const [editorState, setEditorState] = useState(BraftEditor.createEditorState(value))
 
 	const handleEditorChange = editorState => {
@@ -95,14 +98,28 @@ const Editor = ({ value = null, onSave, onChange, maxLength = null, onReachMaxLe
 		}
 	]
 
+	const myUploadFn = async ({ file, libraryId, progress, success, error }) => {
+		const formData = new FormData()
+		formData.append('multipartFile', file)
+		const result = await request({
+			url: BaoHuo_ActivityAddOrEdit_URLS.activityUpload,
+			method: 'post',
+			data: formData
+		})
+		console.log(result)
+		success({
+			url:
+				'https://user-gold-cdn.xitu.io/2020/3/25/1710faab438012f8?imageView2/1/w/1304/h/734/q/85/format/webp/interlace/1'
+		})
+	}
+
 	return (
 		<BraftEditor
+			{...editorProps}
 			extendControls={extendControls}
 			value={editorState}
 			onChange={handleEditorChange}
-			onSave={onSave}
-			maxLength={maxLength}
-			onReachMaxLength={onReachMaxLength}
+			media={{ uploadFn: myUploadFn }}
 		/>
 	)
 }

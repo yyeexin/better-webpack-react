@@ -16,7 +16,7 @@ const Editor = () => {
 
 	return (
 		<Card>
-			<BraftEditor value={editorState} onSave={submitContent} onChange={handleEditorChange} maxLength={10} />
+			<BraftEditor value={editorState} onSave={submitContent} onChange={handleEditorChange} />
 		</Card>
 	)
 }

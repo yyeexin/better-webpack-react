@@ -56,11 +56,12 @@ request.interceptors.response.use(async response => {
 	return response
 })
 
-export default ({ url, method, payload, ...rest }) => {
+export default ({ url, method, data, payload, ...rest }) => {
 	return request(url, {
 		method,
-		...rest,
+		data,
 		...(method.toLowerCase() === 'get' && { params: payload }),
-		...(method.toLowerCase() === 'post' && { data: payload })
+		...(method.toLowerCase() === 'post' && !data && { data: payload }),
+		...rest
 	})
 }
