@@ -100,17 +100,21 @@ const Editor = ({ value = null, onChange, ...editorProps }) => {
 
 	const myUploadFn = async ({ file, libraryId, progress, success, error }) => {
 		const formData = new FormData()
-		formData.append('multipartFile', file)
+		formData.append('file', file)
 		const result = await request({
-			url: BaoHuo_ActivityAddOrEdit_URLS.activityUpload,
+			url: '/koaServer/file/upload',
 			method: 'post',
 			data: formData
 		})
-		console.log(result)
-		success({
-			url:
-				'https://user-gold-cdn.xitu.io/2020/3/25/1710faab438012f8?imageView2/1/w/1304/h/734/q/85/format/webp/interlace/1'
-		})
+		const { data } = result
+		if (Array.isArray(data) && data.length) {
+			const { url } = data[0]
+			success({ url })
+		} else {
+			error({
+				msg: 'unable to upload.'
+			})
+		}
 	}
 
 	return (

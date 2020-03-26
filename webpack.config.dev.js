@@ -30,6 +30,12 @@ module.exports = smart(base, {
 				changeOrigin: true,
 				secure: false,
 				pathRewrite: { '^/api': '/' }
+			},
+			'/koaServer': {
+				target: 'https://api.yyeexin.com/',
+				changeOrigin: true,
+				secure: false,
+				pathRewrite: { '^/koaServer': '/' }
 			}
 		},
 		before(app) {
