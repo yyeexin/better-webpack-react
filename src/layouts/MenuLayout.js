@@ -88,8 +88,9 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	}, [menus])
 
 	const currentLocation = useMemo(() => {
+		console.log('查找当前菜单信息')
 		return flatedMenus.find(item => location.pathname == item.menuUrl)
-	}, [location.pathname, flatedMenus])
+	}, [location.pathname])
 
 	const breadCrumbArray = useMemo(() => {
 		console.log('生成面包屑')

@@ -133,53 +133,159 @@ const Shop = props => {
 		console.log('Failed:', errorInfo)
 	}
 
-	const layout = {
-		wrapperCol: {
-			span: 4
-		}
-	}
-
 	return (
 		<Card>
 			<Form
-				layout='inline'
 				form={form}
 				name='basic'
+				wrapperCol={{ span: 24 }}
 				initialValues={{
 					username: '张三',
 					password: '123'
 				}}
 				onFinish={onFinish}
 				onFinishFailed={onFinishFailed}>
-				<Form.Item
-					name='username'
-					label='Username'
-					rules={[
-						{
-							required: true,
-							message: 'Please input your name'
-						}
-					]}
-					{...layout}>
-					<Input style={{ width: '200px' }} />
-				</Form.Item>
-				<Form.Item
-					name='password'
-					label='Password'
-					rules={[
-						{
-							required: true,
-							message: 'Please input your nickname'
-						}
-					]}
-					{...layout}>
-					<Input style={{ width: '200px' }} />
-				</Form.Item>
-				<Form.Item>
-					<Button type='primary' htmlType='submit'>
-						Submit
-					</Button>
-				</Form.Item>
+				<Row gutter={24}>
+					<Col span={6}>
+						<Form.Item
+							name='address'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your name'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='username'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your name'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item
+							name='password'
+							rules={[
+								{
+									required: true,
+									message: 'Please input your nickname'
+								}
+							]}>
+							<Input style={{ width: '100%' }} />
+						</Form.Item>
+					</Col>
+					<Col span={6}>
+						<Form.Item>
+							<Button type='primary' htmlType='submit'>
+								Submit
+							</Button>
+						</Form.Item>
+					</Col>
+				</Row>
 			</Form>
 			<Table {...tableProps} bordered columns={columns} loading={loading} rowKey='id' scroll={{ x: true }} />
 		</Card>

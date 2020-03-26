@@ -28,7 +28,8 @@ export default {
 					}
 				})
 			}
-		}
+		},
+		*getBranchList() {}
 	},
 	reducers: {
 		updateState(state, { payload }) {
