@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'dva'
 import { Form, Input, Button, Checkbox, Row, Col, Table, Select, Card, Tag } from 'antd'
 import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
 import { hot } from 'react-hot-loader/root'
 import { useFormTable } from '@umijs/hooks'
 const { Option } = Select
+import { StyledFormItem } from './styled-components'
 
 const Shop = props => {
+	const { dispatch } = props
+	useEffect(() => {
+		dispatch({ type: `app/getShopBrandSelects` })
+		dispatch({ type: `app/getShopTypeSelects` })
+		dispatch({ type: 'app/getWareHouses' })
+	}, [])
+
 	const getTableData = async ({ current, pageSize }, formData) => {
-		const data = await props.dispatch({
+		const data = await dispatch({
 			type: `shop/query`,
 			payload: {
 				page: current,
-				pageSize: pageSize
+				pageSize: pageSize,
+				...formData
 			}
 		})
 		return data
@@ -133,157 +142,111 @@ const Shop = props => {
 		console.log('Failed:', errorInfo)
 	}
 
+	const { app } = props
+	const { ShopBrandSelect, ShopTypeSelect, wareHouses, wareHouseTagLines } = app
+
 	return (
 		<Card>
-			<Form
-				form={form}
-				name='basic'
-				wrapperCol={{ span: 24 }}
-				initialValues={{
-					username: '张三',
-					password: '123'
-				}}
-				onFinish={onFinish}
-				onFinishFailed={onFinishFailed}>
+			<Form form={form} initialValues={{}} onFinish={onFinish} onFinishFailed={onFinishFailed}>
 				<Row gutter={24}>
-					<Col span={6}>
-						<Form.Item
-							name='address'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your name'
-								}
-							]}>
-							<Input style={{ width: '100%' }} />
-						</Form.Item>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='brandId'>
+							<Select allowClear placeholder='请选择店铺品牌' onChange={submit}>
+								{ShopBrandSelect.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='username'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your name'
-								}
-							]}>
-							<Input style={{ width: '100%' }} />
-						</Form.Item>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='typeId'>
+							<Select allowClear placeholder='请选择店铺类型' onChange={submit}>
+								{ShopTypeSelect.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
-							<Input style={{ width: '100%' }} />
-						</Form.Item>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='wareHouseId'>
+							<Select
+								allowClear
+								placeholder='请选择仓库'
+								onChange={value => {
+									form.setFieldsValue({ lineId: undefined })
+									submit()
+									if (value) {
+										dispatch({
+											type: `app/getSingleWareHouseTagLines`,
+											payload: {
+												wareHouseIdList: [value]
+											}
+										})
+									} else {
+										dispatch({
+											type: `app/updateState`,
+											payload: {
+												wareHouseTagLines: []
+											}
+										})
+									}
+								}}>
+								{wareHouses.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
-							<Input style={{ width: '100%' }} />
-						</Form.Item>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='lineId'>
+							<Select allowClear placeholder='请选择路线' onChange={submit}>
+								{wareHouseTagLines.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item
-							name='password'
-							rules={[
-								{
-									required: true,
-									message: 'Please input your nickname'
-								}
-							]}>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='password'>
 							<Input style={{ width: '100%' }} />
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
-					<Col span={6}>
-						<Form.Item>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem>
 							<Button type='primary' htmlType='submit'>
 								Submit
 							</Button>
-						</Form.Item>
+						</StyledFormItem>
 					</Col>
 				</Row>
 			</Form>
@@ -292,4 +255,4 @@ const Shop = props => {
 	)
 }
 
-export default connect(({ dispatch, shop }) => ({ dispatch, shop }))(hot(Shop))
+export default connect(({ dispatch, app, shop }) => ({ dispatch, app, shop }))(hot(Shop))
