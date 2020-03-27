@@ -15,9 +15,8 @@ import {
 	Pagination,
 	TreeSelect
 } from 'antd'
-
+import dayjs from 'dayjs'
 import { DatePicker } from '@/components'
-
 const { RangePicker } = DatePicker
 
 import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
@@ -38,7 +37,10 @@ const Shop = props => {
 		dispatch({ type: 'app/getAreaTreeSelect' })
 	}, [])
 
-	const getTableData = async ({ current, pageSize }, { area, ...formData }) => {
+	const getTableData = async (
+		{ current, pageSize },
+		{ area, signTime, createTime, account, search, ...formData }
+	) => {
 		const data = await dispatch({
 			type: `shop/query`,
 			payload: {
@@ -47,6 +49,12 @@ const Shop = props => {
 				...(area && area[0] && { province: area[0] }),
 				...(area && area[1] && { city: area[1] }),
 				...(area && area[2] && { district: area[2] }),
+				...(signTime && signTime[0] && { startTime: dayjs(signTime[0]).format('YYYY-MM-DD') }),
+				...(signTime && signTime[1] && { endTime: dayjs(signTime[1]).format('YYYY-MM-DD') }),
+				...(createTime && createTime[0] && { createdStartTime: dayjs(createTime[0]).format('YYYY-MM-DD') }),
+				...(createTime && createTime[1] && { createdEndTime: dayjs(createTime[1]).format('YYYY-MM-DD') }),
+				...(account && { account }),
+				...(search && { search }),
 				...formData
 			}
 		})
@@ -74,13 +82,13 @@ const Shop = props => {
 			title: '编码',
 			dataIndex: 'code',
 			align: 'center',
-			width: 100
+			width: 200
 		},
 		{
 			title: '品牌',
 			dataIndex: 'brand',
 			align: 'center',
-			width: 100
+			width: 150
 		},
 		{
 			title: '管理账号',
@@ -101,7 +109,7 @@ const Shop = props => {
 			title: '联系人',
 			dataIndex: 'contact',
 			align: 'center',
-			width: 100
+			width: 150
 		},
 		{
 			title: '联系电话',
@@ -113,13 +121,13 @@ const Shop = props => {
 			title: '店铺状态',
 			dataIndex: ['status', 'name'],
 			align: 'center',
-			width: 100
+			width: 150
 		},
 		{
 			title: '启用状态',
 			dataIndex: 'enabled',
 			align: 'center',
-			width: 100,
+			width: 150,
 			render(text, record, index) {
 				return text ? '启用' : '停用'
 			}
@@ -128,7 +136,7 @@ const Shop = props => {
 			title: '仓库',
 			dataIndex: 'wareHouseList',
 			align: 'center',
-			width: 100,
+			width: 150,
 			render(text, record, index) {
 				return (text || []).map(item => (
 					<Tag key={item.id} color='#f50'>
@@ -141,14 +149,14 @@ const Shop = props => {
 			title: '签约时间',
 			dataIndex: 'joinedTime',
 			align: 'center',
-			width: 150
+			width: 200
 		},
 		{
 			title: '操作',
 			key: 'operation',
 			align: 'center',
 			fixed: 'right',
-			width: 100,
+			width: 150,
 			render(text, record, index) {
 				return (
 					<div style={{ display: 'flex', justifyContent: 'space-around' }}>
@@ -295,18 +303,46 @@ const Shop = props => {
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
 						<StyledFormItem name='signTime'>
-							<RangePicker placeholder={['开始签约时间', '截止签约时间']} format='YYYY-MM-DD' />
+							<RangePicker
+								style={{ width: '100%' }}
+								placeholder={['开始签约时间', '截止签约时间']}
+								format='YYYY-MM-DD'
+								onChange={submit}
+							/>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
 						<StyledFormItem name='createTime'>
-							<RangePicker placeholder={['开始创建时间', '截止创建时间']} format='YYYY-MM-DD' />
+							<RangePicker
+								style={{ width: '100%' }}
+								placeholder={['开始创建时间', '截止创建时间']}
+								format='YYYY-MM-DD'
+								onChange={submit}
+							/>
+						</StyledFormItem>
+					</Col>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='account'>
+							<Input allowClear style={{ width: '100%' }} placeholder='管理账号' onPressEnter={submit} />
+						</StyledFormItem>
+					</Col>
+					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
+						<StyledFormItem name='search'>
+							<Input
+								allowClear
+								style={{ width: '100%' }}
+								placeholder='店铺名称、编号、联系人、联系电话'
+								onPressEnter={submit}
+							/>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
 						<StyledFormItem>
-							<Button type='primary' htmlType='submit'>
-								Submit
+							<Button type='primary' onClick={submit}>
+								搜索
+							</Button>
+							<Button type='primary' onClick={reset} style={{ marginLeft: 30 }}>
+								重置
 							</Button>
 						</StyledFormItem>
 					</Col>
@@ -318,7 +354,7 @@ const Shop = props => {
 				columns={columns}
 				loading={loading}
 				rowKey='id'
-				scroll={{ x: true }}
+				scroll={{ x: 1500 }}
 				pagination={false}
 			/>
 			<Pagination
