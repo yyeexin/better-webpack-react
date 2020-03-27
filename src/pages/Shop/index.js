@@ -1,11 +1,31 @@
 import React, { useEffect } from 'react'
 import { connect } from 'dva'
-import { Form, Input, Button, Checkbox, Row, Col, Table, Select, Card, Tag } from 'antd'
+import {
+	Form,
+	Input,
+	Button,
+	Checkbox,
+	Row,
+	Col,
+	Table,
+	Select,
+	Card,
+	Tag,
+	Cascader,
+	Pagination,
+	TreeSelect
+} from 'antd'
+
+import { DatePicker } from '@/components'
+
+const { RangePicker } = DatePicker
+
 import { EyeOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons'
 import { hot } from 'react-hot-loader/root'
 import { useFormTable } from '@umijs/hooks'
 const { Option } = Select
 import { StyledFormItem } from './styled-components'
+import cityData from '@/utils/cityData'
 
 const Shop = props => {
 	const { dispatch } = props
@@ -13,14 +33,20 @@ const Shop = props => {
 		dispatch({ type: `app/getShopBrandSelects` })
 		dispatch({ type: `app/getShopTypeSelects` })
 		dispatch({ type: 'app/getWareHouses' })
+		dispatch({ type: 'app/getShopStatusSelect' })
+		dispatch({ type: 'app/getShopLevelsSelect' })
+		dispatch({ type: 'app/getAreaTreeSelect' })
 	}, [])
 
-	const getTableData = async ({ current, pageSize }, formData) => {
+	const getTableData = async ({ current, pageSize }, { area, ...formData }) => {
 		const data = await dispatch({
 			type: `shop/query`,
 			payload: {
 				page: current,
 				pageSize: pageSize,
+				...(area && area[0] && { province: area[0] }),
+				...(area && area[1] && { city: area[1] }),
+				...(area && area[2] && { district: area[2] }),
 				...formData
 			}
 		})
@@ -28,7 +54,8 @@ const Shop = props => {
 	}
 
 	const [form] = Form.useForm()
-	const { tableProps, search, loading } = useFormTable(getTableData, {
+	const { tableProps, pagination, search, loading } = useFormTable(getTableData, {
+		paginated: true,
 		defaultPageSize: 10,
 		form: form
 	})
@@ -143,7 +170,16 @@ const Shop = props => {
 	}
 
 	const { app } = props
-	const { ShopBrandSelect, ShopTypeSelect, wareHouses, wareHouseTagLines } = app
+	const {
+		ShopBrandSelect,
+		ShopTypeSelect,
+		wareHouses,
+		wareHouseTagLines,
+		ShopStatusSelect,
+		ShopUseStatusSelect,
+		ShopLevelsSelects,
+		AreaTreeSelects
+	} = app
 
 	return (
 		<Card>
@@ -207,38 +243,64 @@ const Shop = props => {
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='area'>
+							<Cascader
+								changeOnSelect
+								placeholder='请选择地址'
+								options={cityData}
+								fieldNames={{ value: 'label' }}
+								onChange={submit}
+							/>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='status'>
+							<Select allowClear placeholder='请选择经营状态' onChange={submit}>
+								{ShopStatusSelect.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='enable'>
+							<Select allowClear placeholder='请选择启用状态' onChange={submit}>
+								{ShopUseStatusSelect.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='rankId'>
+							<Select allowClear placeholder='请选择店铺等级' onChange={submit}>
+								{ShopLevelsSelects.map(item => (
+									<Option key={item.id}>{item.name}</Option>
+								))}
+							</Select>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='areaId'>
+							<TreeSelect
+								allowClear
+								treeDefaultExpandAll
+								style={{ width: '100%' }}
+								placeholder='请选择所属区域'
+								dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
+								treeData={AreaTreeSelects}
+								onChange={submit}
+							/>
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='signTime'>
+							<RangePicker placeholder={['开始签约时间', '截止签约时间']} format='YYYY-MM-DD' />
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-						<StyledFormItem name='password'>
-							<Input style={{ width: '100%' }} />
+						<StyledFormItem name='createTime'>
+							<RangePicker placeholder={['开始创建时间', '截止创建时间']} format='YYYY-MM-DD' />
 						</StyledFormItem>
 					</Col>
 					<Col xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
@@ -250,7 +312,26 @@ const Shop = props => {
 					</Col>
 				</Row>
 			</Form>
-			<Table {...tableProps} bordered columns={columns} loading={loading} rowKey='id' scroll={{ x: true }} />
+			<Table
+				{...tableProps}
+				bordered
+				columns={columns}
+				loading={loading}
+				rowKey='id'
+				scroll={{ x: true }}
+				pagination={false}
+			/>
+			<Pagination
+				{...pagination}
+				showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+				showQuickJumper
+				showSizeChanger
+				onShowSizeChange={pagination.onChange}
+				style={{
+					marginTop: 16,
+					textAlign: 'right'
+				}}
+			/>
 		</Card>
 	)
 }

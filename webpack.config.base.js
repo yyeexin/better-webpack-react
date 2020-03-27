@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin') //给生成的html文件插入自定义标签
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+
 module.exports = {
 	entry: ['react-hot-loader/patch', './src/index.js'],
 	output: {
@@ -75,7 +76,6 @@ module.exports = {
 				collapseWhitespace: true //折叠成一行
 			}
 		}),
-		new webpack.IgnorePlugin(/\.\/locale/, /moment/), //忽略moment内容自动引入所有语言包的行为,减小打包体积
 		new HtmlWebpackTagsPlugin({
 			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'],
 			append: false
