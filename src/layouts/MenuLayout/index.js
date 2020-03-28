@@ -11,7 +11,7 @@ const { Header, Content, Footer, Sider } = Layout
 let timer
 
 const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
-	console.log('渲染layout')
+	// console.log('渲染layout')
 	const { menus } = app
 	const [collapsed, setCollapsed] = useState(!!window.sessionStorage.getItem('collapsed'))
 	const [checked, setChecked] = useState(true)
@@ -30,6 +30,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 		window.addEventListener('resize', changeMenuCollapsed)
 		return () => {
 			clearTimeout(timer)
+			timer = undefined
 			window.removeEventListener('resize', changeMenuCollapsed)
 		}
 	}, [])
@@ -78,22 +79,22 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 	}
 
 	const menusItems = useMemo(() => {
-		console.log('生成菜单')
+		// console.log('生成菜单')
 		return generateMenus(menus)
 	}, [menus])
 
 	const flatedMenus = useMemo(() => {
-		console.log('铺平菜单')
+		// console.log('铺平菜单')
 		return flatMenus(menus)
 	}, [menus])
 
 	const currentLocation = useMemo(() => {
-		console.log('查找当前菜单信息')
+		// console.log('查找当前菜单信息')
 		return flatedMenus.find(item => location.pathname == item.menuUrl)
 	}, [location.pathname])
 
 	const breadCrumbArray = useMemo(() => {
-		console.log('生成面包屑')
+		// console.log('生成面包屑')
 		window.document.title = (currentLocation && currentLocation.menuName) || '古茗电商'
 		const breadArray = []
 		currentLocation && getBreadCrumbArray(currentLocation, breadArray)
