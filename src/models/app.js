@@ -40,7 +40,15 @@ export default {
 			const data = yield call(request, { method: 'get', url: menus })
 			const { status, result = [] } = data
 			if (status === 200) {
-				const menus = result[0].children
+				const menus = [
+					{
+						id: 13001,
+						menuCode: '13001',
+						menuIcon: 'file',
+						menuName: '文章',
+						menuUrl: '/article'
+					}
+				].concat(result[0].children)
 				yield put({
 					type: `updateState`,
 					payload: {
