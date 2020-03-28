@@ -25,7 +25,7 @@ module.exports = {
 		}
 	},
 	module: {
-		// noParse: /jquery/, //不去解析这个包的内部依赖,加快解析速度
+		noParse: /jquery/, //不去解析这个包的内部依赖,加快解析速度
 		rules: [
 			// 处理图片(file-loader来处理也可以，url-loader更适合图片)
 			{

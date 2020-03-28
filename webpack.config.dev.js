@@ -12,7 +12,10 @@ const port = 3456
 
 module.exports = smart(base, {
 	mode: 'development',
-	devtool: 'cheap-eval-source-map', //增加映射文件 可以帮助我们调试源代码
+	devtool: 'eval', //增加映射文件 可以帮助我们调试源代码
+	output: {
+		pathinfo: false
+	},
 	devServer: {
 		clientLogLevel: 'none', //关闭webpack控制台输出
 		quiet: true,
