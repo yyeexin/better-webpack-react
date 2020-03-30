@@ -73,7 +73,8 @@ module.exports = {
 			hash: true,
 			minify: {
 				removeAttributeQuotes: true, //删除双引号
-				collapseWhitespace: true //折叠成一行
+				collapseWhitespace: true, //折叠成一行
+				minifyCSS: true // 压缩内联css
 			}
 		}),
 		new HtmlWebpackTagsPlugin({
