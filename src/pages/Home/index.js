@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Row, Col, Card } from 'antd'
 import { hot } from 'react-hot-loader/root'
+import { connect } from 'dva'
 import { CardTitle } from './styled-components'
-
-const Home = () => {
-	console.log('首页')
+import MapChart from './components/MapChart'
+const Home = props => {
+	useEffect(() => {
+		props.dispatch({ type: `home/getShopAreaData` })
+	}, [])
 	return (
 		<>
 			<Row gutter={10}>
@@ -17,7 +20,9 @@ const Home = () => {
 			</Row>
 			<Row>
 				<Col span={24}>
-					<Card size='small' title={<CardTitle>订单统计</CardTitle>}></Card>
+					<Card size='small' title={<CardTitle>订单统计</CardTitle>}>
+						<MapChart areaData={props.home.shopAreaData} />
+					</Card>
 				</Col>
 			</Row>
 			<Row>
@@ -37,4 +42,4 @@ const Home = () => {
 	)
 }
 
-export default hot(Home)
+export default connect(({ dispatch, home }) => ({ dispatch, home }))(hot(Home))
