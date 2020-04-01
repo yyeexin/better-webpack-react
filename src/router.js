@@ -37,13 +37,17 @@ const router = ({ history, app }) => {
 		{
 			path: '/editor',
 			component: () => import('./pages/Editor')
+		},
+		{
+			path: '/customForm',
+			component: () => import('./pages/CustomForm')
 		}
 	]
 	return (
 		<ConnectedRouter history={history}>
 			<Layout>
 				<Switch>
-					<Redirect exact from='/' to='/home' />
+					<Redirect exact from='/' to='/customForm' />
 					{routes.map(({ path, ...rest }) => (
 						<Route exact key={path} path={path} component={dynamic({ app, ...rest })} />
 					))}

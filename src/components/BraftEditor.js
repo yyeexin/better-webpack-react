@@ -3,8 +3,6 @@ import BraftEditor from 'braft-editor'
 import Table from 'braft-extensions/dist/table'
 import MaxLength from 'braft-extensions/dist/max-length'
 import request from 'utils/request'
-import urls from 'utils/urls'
-const { BaoHuo_ActivityAddOrEdit_URLS } = urls
 
 BraftEditor.use(
 	Table({
