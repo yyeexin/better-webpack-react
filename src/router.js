@@ -41,6 +41,10 @@ const router = ({ history, app }) => {
 		{
 			path: '/customForm',
 			component: () => import('./pages/CustomForm')
+		},
+		{
+			path: '/covid19',
+			component: () => import('./pages/COVID19')
 		}
 	]
 	return (
