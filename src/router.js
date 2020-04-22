@@ -45,6 +45,25 @@ const router = ({ history, app }) => {
 		{
 			path: '/covid19',
 			component: () => import('./pages/COVID19')
+		},
+		/**
+		 * 合同模块
+		 */
+		{
+			path: '/contract/contractHome',
+			component: () => import('./pages/Contract/ContractHome')
+		},
+		{
+			path: '/contract/contractTemplateMgmt',
+			component: () => import('./pages/Contract/ContractTemplateManagement')
+		},
+		{
+			path: '/contract/contractFileMgmt',
+			component: () => import('./pages/Contract/ContractFileManagement')
+		},
+		{
+			path: '/contract/contractBatchSign',
+			component: () => import('./pages/Contract/ContractBatchSign')
 		}
 	]
 	return (

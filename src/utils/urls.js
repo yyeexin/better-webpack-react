@@ -1,13 +1,31 @@
+const APIV1 = '/api/v1'
+const APIV2 = '/api/v2'
+
 const apiPrefix = '/api'
 const takeawayApiPrefix = '/takeawayApi'
-const contractApiPrefix = '/contractApi'
+const contractApiUrls = require('./config_contract.js') //合同模块接口链接
 
 export default {
+	name: '古茗电商', //
+	prefix: 'gm',
+	footerText: 'Gu Ming ',
+	logo: '/logo.jpg',
+	avator: '/dashu.jpeg', //用户头像
+	iconFontCSS: '/iconfont.css',
+	iconFontJS: '/iconfont.js',
+	CORS: [],
+	openPages: ['/login', '/createPage'],
+	apiPrefix,
+	APIV1,
+	APIV2,
+
 	//登录
 	BaoHuo_Login_URLS: {
 		userLogin: `${apiPrefix}/login`, //用户登陆
 		userLogout: `${apiPrefix}/login/logout`, //登录退出
+
 		userGetToken: `${apiPrefix}/login/getToken`, //用户登陆地方的token获取
+
 		changeCurPass: `${apiPrefix}/user/changPersonPass`, //更改用户密码
 		changeUserPassWord: `${apiPrefix}/user/changePass` //修改用户密码
 	},
@@ -43,6 +61,7 @@ export default {
 		getShopLevelsSelect: `${apiPrefix}/rank/getRankList`, //查询店铺等级列表 方便select选择
 		getShopStatusSelect: `${apiPrefix}/status/getStatusList`, //获取店铺状态
 		getShopRolesSelect: `${apiPrefix}/shop/findCRole`, //获取店铺内部角色列表
+		getMonitoringBrand: `${apiPrefix}/shop/selectMonitoringBrand`, //获取店铺品牌列表
 
 		getOrderStatusListSelect: `${apiPrefix}/order/getOrderStatusList`, //获取订单状态列表
 		getTemplatesTypeListSelect: `${apiPrefix}/templatesType/findTemplatesTypeList`, //获取订单模板类型下拉框
@@ -112,7 +131,10 @@ export default {
 		OrderDelete: `${apiPrefix}/OrderDelete`, //删除订单信息
 		orderRevoke: `${apiPrefix}/order/revokeOrder`, //撤销订单
 		OrderAdd: `${apiPrefix}/OrderAdd`, //新增订单
-		OrderRevokeHasClosed: `${apiPrefix}/order/revokeClosedOrder` //撤回已关闭的订单，该功能页面不可见  需要在控制台改变按钮的显示状态进行控制
+		OrderRevokeHasClosed: `${apiPrefix}/order/revokeClosedOrder`, //撤回已关闭的订单，该功能页面不可见  需要在控制台改变按钮的显示状态进行控制
+		updateOrderByLine: `${apiPrefix}/order/updateOrderByLine`, //更新某条路线下的订单信息
+		batchReviewOrders: `${apiPrefix}/order/batchReviewOrders`, //批量更新订单
+		mergeDeliveryOder: `${apiPrefix}/order/mergeDeliveryOder` //批量合并订单
 	},
 
 	// 交单模块
@@ -147,8 +169,10 @@ export default {
 		getCoreStaff: `${apiPrefix}/shop/findShopCoreStaffInfo`, //查询店铺核心人员信息
 		addCoreStaff: `${apiPrefix}/shop/saveShopCoreStaffInfo`, //新增店铺核心人员信息
 		editCoreStaff: `${apiPrefix}/shop/updateShopCoreStaffInfo`, //修改店铺核心人员信息
-		findShopAuth: `${apiPrefix}/shop/findTakeOutInfoByShopId`, //查询单个店铺外卖授权信息
-		editShopAuth: `${apiPrefix}/shop/saveOrUpdateShopTakeOutInfo`, //新增或修改授权信息
+		// findShopAuth: `${apiPrefix}/shop/findTakeOutInfoByShopId`, //查询单个店铺外卖授权信息
+		findShopAuth: `${apiPrefix}/shop/getShopPoiInfoDto`, //查询单个店铺外卖授权信息
+		// editShopAuth: `${apiPrefix}/shop/saveOrUpdateShopTakeOutInfo`, //新增或修改授权信息
+		editShopAuth: `${apiPrefix}/shop/saveOrUpdateShopPoiInfo`, //新增或修改授权信息
 		listShopStatus: `${apiPrefix}/shop/listShopStatus`, //根据名称获取店铺下拉框(一级分类/二级分类)
 		findShopUnderLineTrainInfo: `${apiPrefix}/shop/findShopUnderLineTrainInfo`, //查询门店线下培训信息
 		findShopOnLineTrainInfo: `${apiPrefix}/shop/findShopOnLineTrainInfo`, //查询门店线上培训信息
@@ -166,7 +190,8 @@ export default {
 		update: `${apiPrefix}/shopauth/saveShopAuthDetail`, //更新门店认证
 		uploadLicense: `${apiPrefix}/shopauth/getBizLicInfo`, //上传并返回营业执照信息
 		uploadIDMsg: `${apiPrefix}/shopauth/getIDCardInfo`, //上传并返回身份证信息
-		getBankName: `${apiPrefix}/shopauth/getBankName` //获得银行卡信息
+		getBankName: `${apiPrefix}/shopauth/getBankName`, //获得银行卡信息
+		getFoodBusinessLicense: `${apiPrefix}/shopauth/getFoodBusinessLicense` //获取食品安全经营许可证信息
 	},
 
 	// 店铺认证模块及外卖
@@ -178,6 +203,13 @@ export default {
 		history: `${apiPrefix}/shopCertification/auditHistory`, //审批记录查询
 		downloadFiles: `${apiPrefix}/shopCertification/download`, //附件下载
 		setAuditor: `${apiPrefix}/shopCertification/setAuditor` //新门店添加督导和区域经理
+	},
+	// 店铺资料任务列表模块
+	BaoHuo_ShopMaterialTasks_URLS: {
+		query: `${apiPrefix}/shopJob/listShopJob`, //资料任务列表查询
+		remindShop: `${apiPrefix}/shopJob/remindMsg`, //资料任务未完成提醒
+		queryTaskDetailList: `${apiPrefix}/shopJob/listShopJobType`, //资料任务详情列表
+		getSummaryData: `${apiPrefix}/shopJob/getShopJobTypeSize` //资料数据概况 共多少店、未完成、已完成
 	},
 
 	//商品列表
@@ -927,7 +959,9 @@ export default {
 		uploadBatch: `${takeawayApiPrefix}/picture/uploadBatch`,
 		pictureFindByPage: `${takeawayApiPrefix}/picture/findByPage`,
 		syncPicture: `${takeawayApiPrefix}/picture/syncPicture`,
-		pictureType: `${takeawayApiPrefix}/picture/picTypeList`
+		pictureType: `${takeawayApiPrefix}/picture/picTypeList`,
+		exportGoods: `${takeawayApiPrefix}/food/downloadFood`,
+		saveMenuImportData: `${takeawayApiPrefix}/menu/confirmImportMenuFood`
 	},
 
 	WaiMai_menuHistory_URLS: {
@@ -953,11 +987,13 @@ export default {
 		getDishes: `${takeawayApiPrefix}/food/findFood`,
 		upOrDown: `${takeawayApiPrefix}/food/batchUpOrDown`,
 		getClassify: `${takeawayApiPrefix}/food/findClassify`,
-		addMenu: `${takeawayApiPrefix}/menu/addMenu`
+		addMenu: `${takeawayApiPrefix}/menu/addMenu`,
+		saveClassifySort: `${takeawayApiPrefix}/classify/saveClassifySort`
 	},
 
 	// 生效与待生效菜单
 	MenuDishes: {
+		correctData: `${takeawayApiPrefix}/menu/fixMenuClassify`,
 		getDishes: `${takeawayApiPrefix}/menu/findMenuDetailByPage`,
 		upOrDown: `${takeawayApiPrefix}/menuFood/batchUpOrDown`,
 		dishesList: `${takeawayApiPrefix}/menu/findMenuList`,
@@ -971,7 +1007,12 @@ export default {
 		syncFindShop: `${takeawayApiPrefix}/api/findShopAndFood`,
 		submitSyncShop: `${takeawayApiPrefix}/api/syncMenu`,
 		syncActiveShop: `${takeawayApiPrefix}/menuShop/findShopByMenu`,
-		syncDishesNumber: `${takeawayApiPrefix}/menu/countValidFood`
+		syncDishesNumber: `${takeawayApiPrefix}/menu/countValidFood`,
+		findMenuOnlineDetailByPage: `${takeawayApiPrefix}/menu/findMenuOnlineDetailByPage`, //线上菜单详情
+		saveClassifySort: `${takeawayApiPrefix}/menuClassify/saveMenuClassifySort`,
+		syncClassify: `${takeawayApiPrefix}/api/syncClassify`,
+		batchUpdateSpecPrice: `${takeawayApiPrefix}/spec/batchUpdateSpecPrice`,
+		batchDeleteSpec: `${takeawayApiPrefix}/api/delSpec`
 	},
 
 	// 新增、编辑菜品
@@ -995,40 +1036,68 @@ export default {
 		findOrderRetry: `${takeawayApiPrefix}/order/findOrderRetryLogByPage`,
 		updateLogStatus: `${takeawayApiPrefix}/order/updateLogStatus`
 	},
+	// 外卖店铺装修 品牌故事
+	BranchStory_URLS: {
+		query: `${takeawayApiPrefix}/brandStory/findBrandStoryByPage`,
+		getFailBranchStoryNum: `${takeawayApiPrefix}/brandStory/selectBrandStoryCountVoByFailure`,
+		lists: `${takeawayApiPrefix}/lists`,
+		detail: `${takeawayApiPrefix}/detail`,
+		deleteItems: `${takeawayApiPrefix}/brandStory/deleteBrandStory`
+	},
+	BranchStoryDetail_URLS: {
+		detail: `${takeawayApiPrefix}/brandStory/findBrandStoryBaseById`, //某一个品牌故事的详情
+		queryBindingShops: `${takeawayApiPrefix}/brandStory/findBrandStoryShopByPage`, //查看品牌故事绑定的门店列表
+		// cancelRelationShip: `${takeawayApiPrefix}/cancelRelationShip` //取消品牌故事和门店的绑定关系
+		cancelRelationShip: `${takeawayApiPrefix}/brandStory/deleteBrandStoryByShop
+		` //取消品牌故事和门店的绑定关系
+	},
+	BranchStoryAddOrEdit_URLS: {
+		detail: `${takeawayApiPrefix}/brandStory/findBrandStoryById`, //获取品牌故事详情
+		queryBindShopByPage: `${takeawayApiPrefix}/brandStory/findBrandStoryShopByPage`, //查询品牌绑定的店铺列表
+		queryShop: `${takeawayApiPrefix}/api/findPoiCodeVo`, //查找店铺列表
+		exportShopCodes: `${takeawayApiPrefix}/exportShopCodes`, //导入店铺编码
+		uploadImg: `${takeawayApiPrefix}/brandStory/uploadPicture`, //上传品牌故事图片
+		uploadVideo: `${takeawayApiPrefix}/brandStory/uploadVideo`, //上传品牌故事视频
+		addOrUpdate: `${takeawayApiPrefix}/brandStory/insertOrUpdate` //新增或更新品牌故事
+	},
 
-	// 合同
-	Contract_expired_URLS: {
-		find: `${contractApiPrefix}/overdueContract/findByPage`,
-		renewContract: `${contractApiPrefix}/overdueContract/renewContract`
+	// 店铺装修 - 招牌故事
+	TakeAwayDecorateSignBoard_URLS: {
+		singleShopCancel: `${takeawayApiPrefix}/signage/cancellationShopSignage`, // 单个店铺作废
+		signBoardCancel: `${takeawayApiPrefix}/signage/cancellationSignage`, // 删除整个招牌
+		findSignBoard: `${takeawayApiPrefix}/signage/findByPage`, // 查询生效或失败的招牌
+		signBoardDetail: `${takeawayApiPrefix}/signage/findBySignageId`, // 根据id查找招牌详情
+		signBoardFailCount: `${takeawayApiPrefix}/signage/getSignageInfo`, // 查找失败的招牌个数
+		optionSignBoard: `${takeawayApiPrefix}/signage/insertOrUpdate`, // 新增或编辑招牌
+		signBoardBindShop: `${takeawayApiPrefix}/signage/findShopBySignageId`, // 绑定店铺
+		signOptionalShop: `${takeawayApiPrefix}/api/findUnbindSignageShop` // 可选店铺
 	},
-	Contract_file_URLS: {
-		find: `${contractApiPrefix}/contract/findByPage`,
-		transferContract: `${contractApiPrefix}/contract/transferContract`
+
+	TakeAwayDecorate_BossRecommend_URLS: {
+		findBossRecommendShop: `${takeawayApiPrefix}/api/findBossRecommendShop`, //查询老板推荐可选店铺
+		findByPage: `${takeawayApiPrefix}/bossRecommend/findByPage`, //橱窗列表查询
+		getRecommendDetail: `${takeawayApiPrefix}/bossRecommend/getRecommendDetail`, //查询橱窗详情
+		getRecommendInfo: `${takeawayApiPrefix}/bossRecommend/getRecommendInfo`, //查询橱窗状态
+		getRecommendType: `${takeawayApiPrefix}/bossRecommend/getRecommendType`, //查询开启类型
+		saveBossRecommend: `${takeawayApiPrefix}/bossRecommend/saveBossRecommend`, //橱窗新增或修改
+		saveBossRecommendType: `${takeawayApiPrefix}/bossRecommend/saveBossRecommendType` //关闭店铺推荐
 	},
-	Contract_home_URLS: {
-		findByPage: `${contractApiPrefix}/index/findByPage`,
-		findOverdueByPage: `${contractApiPrefix}/index/findOverdueByPage`,
-		saveOrUpdateStatus: `${contractApiPrefix}/index/saveOrUpdateStatus`,
-		urgencyContract: `${contractApiPrefix}/index/urgencyContract`
+	// 店铺装修 - 海报
+	TakeAwayDecoratePoster_URLS: {
+		findByPage: `${takeawayApiPrefix}/poster/findByPage`, //门店海报分页查询
+		invalidPoster: `${takeawayApiPrefix}/poster/invalidPoster`, //作废海报
+		detail: `${takeawayApiPrefix}/poster/getPosterDetail`, //查询海报详情
+		savePoster: `${takeawayApiPrefix}/poster/saveOrUpdatePoster`, //创建门店海报
+		findPosterShop: `${takeawayApiPrefix}/api/findPosterShop`, //查询门店海报可选店铺
+		findMenuOnlineDetailByPage: `${takeawayApiPrefix}/menu/findMenuOnlineDetailByPage`, //线上菜单详情
+		findSyncPosterShops: `${takeawayApiPrefix}/poster/findSyncPosterShops`, //查询生效或失效店铺
+		invalidShopPoster: `${takeawayApiPrefix}/poster/invalidShopPoster`, //失效门店海报
+		selectSycnCount: `${takeawayApiPrefix}/poster/selectSycnCount` //查询门店海报同步数量
 	},
-	Contract_template_URLS: {
-		find: `${contractApiPrefix}/contractTemplate/page`,
-		remove: `${contractApiPrefix}/contractTemplate/remove`,
-		save: `${contractApiPrefix}/contractTemplate/save`
-	},
-	Contract_AppCommon_URLS: {
-		getContractDict: `${contractApiPrefix}/dict/findList`,
-		signEndContractDownload: `${contractApiPrefix}/contract/signEndContractDownload`
-	},
-	Contract_Option_URLS: {
-		contractTemplate: `${contractApiPrefix}/contractTemplate/page`,
-		contractDetailForm: `${contractApiPrefix}/contract/showContractTemplate`,
-		contractDictionary: `${contractApiPrefix}/dict/findList`, // 数据字典
-		newContract: `${contractApiPrefix}/contract/newContract`, // 新增合同
-		tranforContract: `${contractApiPrefix}/contract/transferContract`, // 转让合同
-		contractInfoById: `${contractApiPrefix}/contract/findContractById`, // 获取合同详情
-		pullPersonInfo: `${contractApiPrefix}/contract/getSignerInfo` // 纷享销客拉取客户数据
-	},
+
+	// 合同 api配置
+	...contractApiUrls,
+
 	BaoHuo_OrderEval_URLS: {
 		find: `${apiPrefix}/orderComment/page`
 	},

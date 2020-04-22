@@ -28,11 +28,16 @@ module.exports = smart(base, {
 		compress: true, // 是否压缩
 		proxy: {
 			'/api': {
-				// target: 'http://localhost:8080',
 				target: 'http://dev-b.gumingnc.com/api', //测试服务器2
 				changeOrigin: true,
 				secure: false,
 				pathRewrite: { '^/api': '/' }
+			},
+			'/contractApi': {
+				target: 'http://dev-b.gumingnc.com/contractApi', //测试服务器2
+				changeOrigin: true,
+				secure: false,
+				pathRewrite: { '^/contractApi': '/' }
 			},
 			'/koaServer': {
 				target: 'https://api.yyeexin.com/',

@@ -1,6 +1,6 @@
 import request from 'utils/request'
 import urls from 'utils/urls'
-const { BaoHuo_Login_URLS, BaoHuo_Menu_URLS, BaoHuo_AppCommon_URLS } = urls
+const { BaoHuo_Login_URLS, BaoHuo_Menu_URLS, BaoHuo_AppCommon_URLS, Contract_AppCommon_URLS } = urls
 const { userLogin } = BaoHuo_Login_URLS
 const { menus } = BaoHuo_Menu_URLS
 const {
@@ -12,6 +12,8 @@ const {
 	getShopLevelsSelect,
 	getAreaTreeSelect
 } = BaoHuo_AppCommon_URLS
+
+const { getContractDict, signEndContractDownload } = Contract_AppCommon_URLS
 
 export default {
 	namespace: 'app',
@@ -27,7 +29,10 @@ export default {
 			{ id: false, name: '禁用' }
 		],
 		ShopLevelsSelects: [],
-		AreaTreeSelects: []
+		AreaTreeSelects: [],
+		ContractType: [], // 合同类型
+		ContractStatus: [], // 合同状态
+		ContractDictionary: [] // 合同字典
 	},
 	subscriptions: {},
 	effects: {
@@ -157,6 +162,63 @@ export default {
 							value: item.id,
 							children: item.children || []
 						}))
+					}
+				})
+			}
+		},
+		*getContractType({ payload }, { call, put }) {
+			const data = yield call(request, {
+				method: 'get',
+				url: getContractDict,
+				payload: {
+					...payload,
+					typeCode: 'CONTRACT_TYPE'
+				}
+			})
+			const { status, result = [] } = data
+			if (status === 200) {
+				yield put({
+					type: 'updateState',
+					payload: {
+						ContractType: result
+					}
+				})
+			}
+		},
+		*getContractStatus({ payload }, { call, put }) {
+			const data = yield call(request, {
+				method: 'get',
+				url: getContractDict,
+				payload: {
+					...payload,
+					typeCode: 'CONTRACT_STATUS'
+				}
+			})
+			const { status, result = [] } = data
+			if (status === 200) {
+				yield put({
+					type: 'updateState',
+					payload: {
+						ContractStatus: result
+					}
+				})
+			}
+		},
+		*getContractDictionary({ payload = {} }, { call, put }) {
+			const data = yield call(request, {
+				method: 'get',
+				url: getContractDict,
+				payload: {
+					...payload,
+					typeCode: 'CONTRACT_CONTENT'
+				}
+			})
+			const { status, result = [] } = data
+			if (status === 200) {
+				yield put({
+					type: 'updateState',
+					payload: {
+						ContractDictionary: result
 					}
 				})
 			}
