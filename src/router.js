@@ -50,6 +50,10 @@ const router = ({ history, app }) => {
 		 * 合同模块
 		 */
 		{
+			path: '/contract/add',
+			component: () => import('./pages/Contract/ContractAdd')
+		},
+		{
 			path: '/contract/contractHome',
 			component: () => import('./pages/Contract/ContractHome')
 		},
