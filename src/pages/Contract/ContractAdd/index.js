@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'dva'
 import { hot } from 'react-hot-loader/root'
-import { Card, Row, Col, Form, Input, Button, Modal, Table, Pagination } from 'antd'
 import { useRequest } from '@umijs/hooks'
+import { connect } from 'dva'
+import { Card, Row, Col, Form, Input, Button, Modal, Table, Tag, InputNumber } from 'antd'
 
 const modelName = 'contractAdd'
 
 const ContractAdd = props => {
-	const [form] = Form.useForm()
-	const { dispatch } = props
-	const [templateModalVisible, setTemplateModalVisible] = useState(false)
+	const { dispatch, contractAdd } = props
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
+	const [selectedTemplate, setSelectedTemplate] = useState({})
+	const [templateModalVisible, setTemplateModalVisible] = useState(false)
+
 	useEffect(() => {
 		// dispatch({ type: 'app/getContractType' })
 		// dispatch({ type: 'app/getContractStatus' })
@@ -37,6 +38,8 @@ const ContractAdd = props => {
 		defaultPageSize: 5
 	})
 
+	const [form] = Form.useForm()
+
 	const onFinish = values => {
 		console.log('Success:', values)
 	}
@@ -56,9 +59,29 @@ const ContractAdd = props => {
 							wrapperCol={{ span: 16 }}
 							onFinish={onFinish}
 							onFinishFailed={onFinishFailed}>
-							<Form.Item name='template' label='合同模板'>
-								<section onClick={() => setTemplateModalVisible(true)}>
-									<Button>选择模板</Button>
+							<Form.Item
+								name='template'
+								label='合同模板'
+								rules={[
+									{
+										required: true,
+										message: '请选择合同模板'
+									}
+								]}>
+								<section
+									onClick={() => {
+										setSelectedRowKeys(() => {
+											const { id } = contractAdd.activeTemplate
+											return id ? [id] : []
+										})
+										setSelectedTemplate(() => contractAdd.activeTemplate)
+										setTemplateModalVisible(true)
+									}}>
+									{contractAdd.activeTemplate.id ? (
+										<Tag color='#108ee9'>{contractAdd.activeTemplate.contractTemplateName}</Tag>
+									) : (
+										<Button>选择模板</Button>
+									)}
 								</section>
 							</Form.Item>
 							<Form.Item
@@ -81,7 +104,18 @@ const ContractAdd = props => {
 										message: '请输入主体编码'
 									}
 								]}>
-								<Input allowClear style={{ width: '100%' }} placeholder='请输入主体编号' />
+								{form.getFieldValue('template') &&
+								form.getFieldValue('template').contractTypeId &&
+								(form.getFieldValue('template').contractTypeId === 8 ||
+									form.getFieldValue('template').contractTypeId === 9) ? (
+									<InputNumber style={{ width: '100%' }} placeholder='请输入主体编号(手机号)' />
+								) : (
+									<Input
+										allowClear
+										style={{ width: '100%' }}
+										placeholder='请输入主体编号(店铺编码)'
+									/>
+								)}
 							</Form.Item>
 							<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
 								<Button type='primary' htmlType='submit'>
@@ -97,8 +131,23 @@ const ContractAdd = props => {
 					width={700}
 					title='合同模板'
 					visible={templateModalVisible}
-					onOk={() => setTemplateModalVisible(false)}
-					onCancel={() => setTemplateModalVisible(false)}>
+					onOk={() => {
+						dispatch({
+							type: `${modelName}/updateState`,
+							payload: {
+								activeTemplate: selectedTemplate
+							}
+						})
+						form.setFieldsValue({ template: selectedTemplate })
+						setSelectedRowKeys([])
+						setSelectedTemplate({})
+						setTemplateModalVisible(false)
+					}}
+					onCancel={() => {
+						setSelectedRowKeys([])
+						setSelectedTemplate({})
+						setTemplateModalVisible(false)
+					}}>
 					<Table
 						{...tableProps}
 						rowKey='id'
@@ -106,9 +155,7 @@ const ContractAdd = props => {
 							type: 'radio',
 							selectedRowKeys,
 							onChange: selectedRowKeys => setSelectedRowKeys(selectedRowKeys),
-							onSelect: (record, selected, selectedRows, nativeEvent) => {
-								console.log(record, selected, selectedRows, nativeEvent)
-							}
+							onSelect: record => setSelectedTemplate(record)
 						}}
 						columns={[
 							{
