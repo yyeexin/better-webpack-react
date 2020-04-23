@@ -56,6 +56,7 @@
 		"dayjs": "^1.8.23",
 		"dva": "^2.6.0-beta.20",
 		"dva-loading": "^3.0.20",
+		"qs": "^6.9.3",
 		"react": "^16.13.0",
 		"react-dom": "^16.13.1",
 		"react-hot-loader": "^4.12.18",

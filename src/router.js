@@ -54,6 +54,10 @@ const router = ({ history, app }) => {
 			component: () => import('./pages/Contract/ContractAdd')
 		},
 		{
+			path: '/contract/add/:templateId',
+			component: () => import('./pages/Contract/ContractAdd/FillContract')
+		},
+		{
 			path: '/contract/contractHome',
 			component: () => import('./pages/Contract/ContractHome')
 		},

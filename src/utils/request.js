@@ -3,7 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request'
-import { notification } from 'antd'
+import { notification, message } from 'antd'
 
 const codeMessage = {
 	200: '服务器成功返回请求的数据。',
@@ -49,9 +49,14 @@ const request = extend({
 request.interceptors.response.use(async response => {
 	const data = await response.clone().json()
 	const { status } = data
-	if (status === 403) {
-		console.log('权限不足,返回首页')
-		return (location.href = '/#/login')
+	switch (status) {
+		case 403:
+			console.log('权限不足,返回首页')
+			window.location.href = '/#/login'
+			break
+		case 500:
+			message.error(data.message)
+			break
 	}
 	return response
 })

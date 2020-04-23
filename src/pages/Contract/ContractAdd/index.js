@@ -7,6 +7,7 @@ import { Card, Row, Col, Form, Input, Button, Modal, Table, Tag, InputNumber } f
 const modelName = 'contractAdd'
 
 const ContractAdd = props => {
+	const [form] = Form.useForm()
 	const { dispatch, contractAdd } = props
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 	const [selectedTemplate, setSelectedTemplate] = useState({})
@@ -38,10 +39,17 @@ const ContractAdd = props => {
 		defaultPageSize: 5
 	})
 
-	const [form] = Form.useForm()
-
 	const onFinish = values => {
 		console.log('Success:', values)
+		const { template, shopName, shopCode } = values
+		const { contractTemplateId } = template
+		props.dispatch({
+			type: `${modelName}/updateState`,
+			payload: {
+				addContractFormValues: values
+			}
+		})
+		props.history.push(`/contract/add/${contractTemplateId}?shopName=${shopName}&shopCode=${shopCode}`)
 	}
 
 	const onFinishFailed = errorInfo => {
@@ -58,7 +66,8 @@ const ContractAdd = props => {
 							labelCol={{ span: 8 }}
 							wrapperCol={{ span: 16 }}
 							onFinish={onFinish}
-							onFinishFailed={onFinishFailed}>
+							onFinishFailed={onFinishFailed}
+							initialValues={contractAdd.addContractFormValues}>
 							<Form.Item
 								name='template'
 								label='合同模板'
@@ -96,26 +105,44 @@ const ContractAdd = props => {
 								<Input allowClear style={{ width: '100%' }} placeholder='请输入签约主体' />
 							</Form.Item>
 							<Form.Item
-								name='shopCode'
-								label='主体编号'
-								rules={[
-									{
-										required: true,
-										message: '请输入主体编码'
-									}
-								]}>
-								{form.getFieldValue('template') &&
-								form.getFieldValue('template').contractTypeId &&
-								(form.getFieldValue('template').contractTypeId === 8 ||
-									form.getFieldValue('template').contractTypeId === 9) ? (
-									<InputNumber style={{ width: '100%' }} placeholder='请输入主体编号(手机号)' />
-								) : (
-									<Input
-										allowClear
-										style={{ width: '100%' }}
-										placeholder='请输入主体编号(店铺编码)'
-									/>
-								)}
+								noStyle
+								shouldUpdate={(prevValues, currentValues) =>
+									(prevValues.template || {}).contractTypeId !== currentValues.template.contractTypeId
+								}>
+								{({ getFieldValue }) => {
+									const template = getFieldValue('template') || {}
+									const { contractTypeId } = template
+									return contractTypeId && (contractTypeId === 8 || contractTypeId === 9) ? (
+										<Form.Item
+											name='shopCode'
+											label='主体编号'
+											validateTrigger='onBlur'
+											rules={[
+												{
+													required: true,
+													message: '请输入主体编码'
+												},
+												{
+													message: '请输入正确的主体编码（手机号）',
+													pattern: /^1[345789][0-9]{9}$/
+												}
+											]}>
+											<InputNumber style={{ width: '100%' }} placeholder='请输入主体编码' />
+										</Form.Item>
+									) : (
+										<Form.Item
+											name='shopCode'
+											label='主体编号'
+											rules={[
+												{
+													required: true,
+													message: '请输入主体编码'
+												}
+											]}>
+											<Input allowClear style={{ width: '100%' }} placeholder='请输入主体编码' />
+										</Form.Item>
+									)
+								}}
 							</Form.Item>
 							<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
 								<Button type='primary' htmlType='submit'>
