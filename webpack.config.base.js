@@ -77,10 +77,10 @@ module.exports = {
 				minifyCSS: true // 压缩内联css
 			}
 		}),
-		new HtmlWebpackTagsPlugin({
-			tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'],
-			append: false
-		})
+		// new HtmlWebpackTagsPlugin({
+		// 	tags: ['https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js'],
+		// 	append: false
+		// })
 	],
 	externals: {
 		jquery: '$' //告诉webpack,此模块是外部引用的 并不需要打包 例如引入外部cdn资源

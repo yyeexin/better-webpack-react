@@ -48,15 +48,19 @@ const request = extend({
 // 提前对响应做异常处理
 request.interceptors.response.use(async response => {
 	const data = await response.clone().json()
-	const { status } = data
+	console.log(data)
+	const { status, message = '' } = data
 	switch (status) {
+		case 401:
 		case 403:
 			console.log('权限不足,返回首页')
 			window.location.href = '/#/login'
 			break
 		case 500:
-			message.error(data.message)
+			message.error(message)
 			break
+		default:
+			if (message) message.error(message)
 	}
 	return response
 })

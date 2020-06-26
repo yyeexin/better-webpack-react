@@ -21,7 +21,7 @@ export default {
 
 	//登录
 	BaoHuo_Login_URLS: {
-		userLogin: `${apiPrefix}/login`, //用户登陆
+		userLogin: `${apiPrefix}/login/login`, //用户登陆
 		userLogout: `${apiPrefix}/login/logout`, //登录退出
 
 		userGetToken: `${apiPrefix}/login/getToken`, //用户登陆地方的token获取
