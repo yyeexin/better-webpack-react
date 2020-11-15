@@ -78,10 +78,19 @@ const router = ({ history, app }) => {
 		<ConnectedRouter history={history}>
 			<Layout>
 				<Switch>
-					<Redirect exact from='/' to='/customForm' />
-					{routes.map(({ path, ...rest }) => (
-						<Route exact key={path} path={path} component={dynamic({ app, ...rest })} />
-					))}
+					<Redirect exact from='/' to='/home' />
+					{routes.map(({ path, component, ...rest }) => {
+						return (
+							<Route
+								exact
+								key={path}
+								path={path}
+								component={
+									typeof component === 'function' ? dynamic({ app, component, ...rest }) : component
+								}
+							/>
+						)
+					})}
 					<Route component={dynamic({ app, component: () => import('./pages/404') })} />
 				</Switch>
 			</Layout>

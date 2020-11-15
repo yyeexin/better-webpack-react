@@ -82,8 +82,8 @@ module.exports = smart(base, {
 				messages: [`App is running at: http://${IP}:${port}/`]
 			}
 		}),
-		new webpack.NamedModulesPlugin(), //打印更新的模块路径
-		new webpack.HotModuleReplacementPlugin(), //热更新插件
+		// new webpack.NamedModulesPlugin(), //打印更新的模块路径
+		// new webpack.HotModuleReplacementPlugin(), //热更新插件
 		new Happypack({
 			id: 'js',
 			threadPool: happyThreadPool,

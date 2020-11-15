@@ -63,8 +63,8 @@ request.interceptors.request.use((url, options) => {
 // 提前对响应做异常处理
 request.interceptors.response.use(async response => {
 	const data = await response.clone().json()
-	// console.log('response:', data)
-	const { status, message } = data
+	// console.log(data)
+	const { status, message = '' } = data
 	switch (status) {
 		case 401:
 		case 403:
@@ -72,7 +72,7 @@ request.interceptors.response.use(async response => {
 			window.location.href = '/#/login'
 			break
 		case 500:
-			message && message.error(data.message || '服务器异常,请稍后再试!')
+			message.error(message)
 			break
 		default:
 			return response
