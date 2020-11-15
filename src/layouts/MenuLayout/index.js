@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Layout, Menu, Breadcrumb, Switch } from 'antd'
 import { router as reactRouter } from 'dva'
-import { Icon } from '@ant-design/compatible'
+// import { Icon } from '@ant-design/compatible'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import { GlobalMenuStyle, MenuLogoDiv, ThemeSwitchDiv } from './styled-components'
 import logo from 'assets/image/logo.jpg'
@@ -43,7 +43,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 					key={menuCode}
 					title={
 						<>
-							{menuIcon && <Icon type={menuIcon} />}
+							{/* {menuIcon && <Icon type={menuIcon} />} */}
 							<span>{menuName}</span>
 						</>
 					}>
@@ -52,7 +52,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 			) : (
 				<Menu.Item key={menuCode}>
 					<Link to={menuUrl || '#'}>
-						{menuIcon && <Icon type={menuIcon} style={{ marginRight: 10 }} />}
+						{/* {menuIcon && <Icon type={menuIcon} style={{ marginRight: 10 }} />} */}
 						<span>{menuName}</span>
 					</Link>
 				</Menu.Item>
@@ -117,7 +117,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 				</Menu>
 				{!collapsed && (
 					<ThemeSwitchDiv dark={checked}>
-						<Icon type='bulb' />
+						{/* <Icon type='bulb' /> */}
 						<span>切换主题</span>
 						<Switch
 							checked={checked}
@@ -141,7 +141,7 @@ const MenuLayout = ({ router: { location }, children, dispatch, app }) => {
 				<Breadcrumb>
 					{breadCrumbArray.map(item => (
 						<Breadcrumb.Item key={item.menuCode}>
-							{item.menuIcon && <Icon type={item.menuIcon} />}
+							{/* {item.menuIcon && <Icon type={item.menuIcon} />} */}
 							<span>{item.menuName}</span>
 						</Breadcrumb.Item>
 					))}

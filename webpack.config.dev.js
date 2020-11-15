@@ -28,7 +28,8 @@ module.exports = smart(base, {
 		compress: true, // 是否压缩
 		proxy: {
 			'/api': {
-				target: 'http://dev-b.gumingnc.com/api', //测试服务器2
+				target: 'http://book-guming-two.c545f041cdb444b3db0ad02aa373f7c45.cn-hangzhou.alicontainer.com/api',
+				// target: 'http://dev-b.gumingnc.com/api', //测试服务器2
 				changeOrigin: true,
 				secure: false,
 				pathRewrite: { '^/api': '/' }

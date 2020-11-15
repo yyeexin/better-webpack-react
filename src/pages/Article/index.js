@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import SelectShops from './SelectShops'
 
 const Article = () => {
-	return <div>wenzhang</div>
+	const [relativeShops, setRelativeShops] = useState([])
+
+	return (
+		<div>
+			<SelectShops defaultValue={relativeShops} onChange={shops => setRelativeShops(shops)} />
+		</div>
+	)
 }
 
 export default Article

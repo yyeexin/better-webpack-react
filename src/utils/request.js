@@ -27,6 +27,7 @@ const codeMessage = {
  * 异常处理程序
  */
 const errorHandler = error => {
+	console.log('error:', error)
 	const { response = {} } = error
 	const errortext = codeMessage[response.status] || response.statusText
 	const { status, url } = response
@@ -45,20 +46,37 @@ const request = extend({
 	credentials: 'include' // 默认请求是否带上cookie
 })
 
+request.interceptors.request.use((url, options) => {
+	return {
+		url,
+		options: {
+			...options,
+			...(url !== '/api/login/login' && {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem('token')}`
+				}
+			})
+		}
+	}
+})
+
 // 提前对响应做异常处理
 request.interceptors.response.use(async response => {
 	const data = await response.clone().json()
-	const { status } = data
+	// console.log('response:', data)
+	const { status, message } = data
 	switch (status) {
+		case 401:
 		case 403:
 			console.log('权限不足,返回首页')
 			window.location.href = '/#/login'
 			break
 		case 500:
-			message.error(data.message)
+			message && message.error(data.message || '服务器异常,请稍后再试!')
 			break
+		default:
+			return response
 	}
-	return response
 })
 
 export default ({ url, method, data, payload, ...rest }) => {

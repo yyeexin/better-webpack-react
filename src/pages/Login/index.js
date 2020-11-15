@@ -29,7 +29,8 @@ const Login = props => {
 			type: 'app/login',
 			payload: {
 				account,
-				password
+				password,
+				isCommonLogin: true
 			}
 		})
 		if (res) props.history.push('/')

@@ -38,8 +38,12 @@ export default {
 	effects: {
 		*login({ payload }, { call, put, select }) {
 			const data = yield call(request, { url: userLogin, method: 'post', payload })
-			const { message, status } = data
-			return message === 'success' || status === 200
+			if (!data) return
+			const { status, access_token } = data
+			if (status === 200) {
+				localStorage.setItem('token', access_token)
+				return true
+			}
 		},
 		*getMenus({ payload }, { call, put, select }) {
 			const data = yield call(request, { method: 'get', url: menus })
