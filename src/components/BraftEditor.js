@@ -1,38 +1,40 @@
-import React, { useState } from 'react'
-import BraftEditor from 'braft-editor'
-import Table from 'braft-extensions/dist/table'
-import MaxLength from 'braft-extensions/dist/max-length'
-import request from 'utils/request'
+import React, { useState } from "react";
+import BraftEditor from "braft-editor";
+import Table from "braft-extensions/dist/table";
+import MaxLength from "braft-extensions/dist/max-length";
+import request from "@/utils/request";
 
 BraftEditor.use(
-	Table({
-		defaultColumns: 4, // 默认列数
-		defaultRows: 3, // 默认行数
-		withDropdown: false, // 插入表格前是否弹出下拉菜单
-		columnResizable: false, // 是否允许拖动调整列宽，默认false
-		exportAttrString: '' // 指定输出HTML时附加到table标签上的属性字符串
-	})
-)
+    Table({
+        defaultColumns: 4, // 默认列数
+        defaultRows: 3, // 默认行数
+        withDropdown: false, // 插入表格前是否弹出下拉菜单
+        columnResizable: false, // 是否允许拖动调整列宽，默认false
+        exportAttrString: "", // 指定输出HTML时附加到table标签上的属性字符串
+    })
+);
 
-BraftEditor.use(MaxLength())
+BraftEditor.use(MaxLength());
 
 const Editor = ({ value = null, onChange, ...editorProps }) => {
-	const [editorState, setEditorState] = useState(BraftEditor.createEditorState(value))
+    const [editorState, setEditorState] = useState(
+        BraftEditor.createEditorState(value)
+    );
 
-	const handleEditorChange = editorState => {
-		setEditorState(editorState)
-		onChange && onChange(editorState)
-	}
+    const handleEditorChange = (editorState) => {
+        setEditorState(editorState);
+        onChange && onChange(editorState);
+    };
 
-	const preview = () => {
-		if (window.previewWindow) window.previewWindow.close()
-		window.previewWindow = window.open()
-		window.previewWindow.document.write(buildPreviewHtml())
-		window.previewWindow.document.close()
-	}
+    const preview = () => {
+        if (window.previewWindow) window.previewWindow.close();
+        window.previewWindow = window.open();
+        window.previewWindow.document.write(buildPreviewHtml());
+        window.previewWindow.document.close();
+    };
 
-	const buildPreviewHtml = () => {
-		return `
+    const buildPreviewHtml = () => {
+        return `
           <!Doctype html>
           <html>
             <head>
@@ -84,46 +86,52 @@ const Editor = ({ value = null, onChange, ...editorProps }) => {
               <div class="container">${editorState.toHTML()}</div>
             </body>
           </html>
-        `
-	}
+        `;
+    };
 
-	const extendControls = [
-		{
-			key: 'custom-button',
-			type: 'button',
-			text: '预览',
-			onClick: preview
-		}
-	]
+    const extendControls = [
+        {
+            key: "custom-button",
+            type: "button",
+            text: "预览",
+            onClick: preview,
+        },
+    ];
 
-	const myUploadFn = async ({ file, libraryId, progress, success, error }) => {
-		const formData = new FormData()
-		formData.append('file', file)
-		const result = await request({
-			url: '/koaServer/file/upload',
-			method: 'post',
-			data: formData
-		})
-		const { data } = result
-		if (Array.isArray(data) && data.length) {
-			const { url } = data[0]
-			success({ url })
-		} else {
-			error({
-				msg: 'unable to upload.'
-			})
-		}
-	}
+    const myUploadFn = async ({
+        file,
+        libraryId,
+        progress,
+        success,
+        error,
+    }) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        const result = await request({
+            url: "/koaServer/file/upload",
+            method: "post",
+            data: formData,
+        });
+        const { data } = result;
+        if (Array.isArray(data) && data.length) {
+            const { url } = data[0];
+            success({ url });
+        } else {
+            error({
+                msg: "unable to upload.",
+            });
+        }
+    };
 
-	return (
-		<BraftEditor
-			{...editorProps}
-			extendControls={extendControls}
-			value={editorState}
-			onChange={handleEditorChange}
-			media={{ uploadFn: myUploadFn }}
-		/>
-	)
-}
+    return (
+        <BraftEditor
+            {...editorProps}
+            extendControls={extendControls}
+            value={editorState}
+            onChange={handleEditorChange}
+            media={{ uploadFn: myUploadFn }}
+        />
+    );
+};
 
-export default Editor
+export default Editor;

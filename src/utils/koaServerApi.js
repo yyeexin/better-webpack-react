@@ -1,6 +1,4 @@
-const prefix = '/koaServer'
+const prefix = "/koaServer";
 export default {
-	Article_urls: {
-        
-    }
-}
+    Article_urls: {},
+};
