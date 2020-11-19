@@ -4,21 +4,21 @@
 		[
 			"@babel/preset-env",
 			{
-				"modules": false, // 对ES6的模块文件不做转化，以便使用tree shaking、sideEffects等
-				"useBuiltIns": "usage",
-				"corejs": 3
+				// "modules": false, // 对ES6的模块文件不做转化，以便使用tree shaking、sideEffects等
+				// "useBuiltIns": "usage",
+				// "corejs": 3
 			}
 		]
 	],
 	"plugins": [
-		"react-hot-loader/babel", //react热更新支持
-		[
-			"import",
-			{
-				"libraryName": "antd",
-				"libraryDirectory": "es",
-				"style": "css" // `style: true` 会加载 less 文件
-			}
-		]
+		// "react-hot-loader/babel", //react热更新支持
+		// [
+		// 	"import",
+		// 	{
+		// 		"libraryName": "antd",
+		// 		"libraryDirectory": "es",
+		// 		"style": "css" // `style: true` 会加载 less 文件
+		// 	}
+		// ]
 	]
 }

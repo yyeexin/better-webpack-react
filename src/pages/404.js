@@ -1,5 +1,5 @@
 import React from 'react'
-import image from 'assets/image/sd.jpg'
+import image from '@/assets/image/sd.jpg'
 import { connect, routerRedux, router } from 'dva'
 
 const page404 = props => {
